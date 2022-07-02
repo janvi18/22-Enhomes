@@ -6,6 +6,8 @@ const roleController =require("./Controller/roleController")
 const staffController=require("./Controller/staffController")
 const maintenanceController=require("./Controller/maintenanceController")
 const houseController = require("./controller/houseController")
+const visitorController = require("./controller/visitorController")
+const deliveryController = require("./controller/deliveryController")
 
 
 const app = express()
@@ -48,6 +50,19 @@ app.get("/house",houseController.getAllHouses)
 app.post("/house",houseController.addHouse)
 app.put("/house",houseController.updateHouse)
 app.delete("/house",houseController.deletehouse)
+
+//Visitor Api
+app.get("/visitor",visitorController.getAllvisitors)
+app.post("/visitor",visitorController.addvisitor)
+app.put("/visitor",visitorController.getAllvisitors)
+app.delete("/visitor",visitorController.deletevisitor)
+
+//Delivery Api
+app.get("/delivery",deliveryController.getAlldeliverys)
+app.post("/delivery",deliveryController.adddelivery)
+app.get("/delivery",deliveryController.updatedelivery)
+app.delete("/delivery",deliveryController.deletedelivery)
+
 
 
 

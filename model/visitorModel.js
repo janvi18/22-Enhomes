@@ -2,8 +2,8 @@ const mongoose = require("mongoose")
 
 const visitorSchema = new mongoose.Schema({
     visitorName:String,
-    arrivingTime:Time,
-    
+    arrivingTime:String,
+    isAllowed:Boolean
 
 })
 
