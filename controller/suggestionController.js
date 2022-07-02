@@ -68,7 +68,7 @@ module.exports.updateSuggestion = function (req, res) {
 
 //Delete Suggestion
 module.exports.deleteSuggestion = function (req, res) {
-    let suggestionNo = req.body.userId
+    let suggestionNo = req.body.suggestionNo
 
     suggestionModel.deleteOne({ _id: suggestionNo }, function (err, data) {
         if (err) {
@@ -109,4 +109,3 @@ module.exports.getAllSuggestions = function (req, res) {
         }
     })
 }
-
