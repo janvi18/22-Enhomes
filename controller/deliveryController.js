@@ -3,6 +3,8 @@ const deliveryModel = require("../model/deliveryModel")
 //adddelivery
 
 module.exports.adddelivery = function (req, res) {
+    let user = req.body.user
+    let house = req.body.house
     let couriertype = req.body.couriertype;
     isAllowed = req.body.isAllowed,
         status = req.body.status
@@ -10,6 +12,8 @@ module.exports.adddelivery = function (req, res) {
 
 
     let delivery = new deliveryModel({
+        "user":user,
+        "house":house,
         "couriertype": couriertype,
         "isAllowed": isAllowed,
         "status": status
@@ -36,7 +40,7 @@ module.exports.adddelivery = function (req, res) {
 
 //getAlldeliverys
 module.exports.getAlldeliverys = function (req, res) {
-    deliveryModel.find(function (err, data) {
+    deliveryModel.find().populate("user","house").exec(function(err,data) {
         if (err) {
             console.log(err)
             res.json({

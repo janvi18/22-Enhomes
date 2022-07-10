@@ -3,9 +3,13 @@ const visitorModel = require("../model/visitorModel")
 //addvisitor
 
 module.exports.addvisitor = function (req, res) {
+    let user = req.body.user
+    let house = req.body.house
     let visitorDetails = req.body.visitorDetails;
 
     let visitor = new visitorModel({
+        "user":user,
+        "house":house,
         "visitorDetails": visitorDetails
     })
 
@@ -30,7 +34,7 @@ module.exports.addvisitor = function (req, res) {
 
 //getAllvisitors
 module.exports.getAllvisitors = function (req, res) {
-    visitorModel.find(function (err, data) {
+    visitorModel.find().populate("user","house").exec(function(err,data) {
         if (err) {
             console.log(err)
             res.json({

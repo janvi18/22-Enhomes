@@ -3,6 +3,8 @@ const suggestionModel = require("../model/suggestionModel")
 
 // add suggestion
 module.exports.addSuggestion = function (req, res) {
+    let user = req.body.user
+    let house = req.body.house
     let suggestionNo = req.body.suggestionNo
     let date = req.body.date
     let memberName = req.body.memberName
@@ -11,6 +13,8 @@ module.exports.addSuggestion = function (req, res) {
 
 
     let suggestion = new suggestionModel({
+        "user":user,
+        "house":house,
         "suggestionNo": suggestionNo,
         "date": date,
         "memberName": memberName,
@@ -91,7 +95,7 @@ module.exports.deleteSuggestion = function (req, res) {
 
 //List Suggestion
 module.exports.getAllSuggestions = function (req, res) {
-    suggestionModel.find(function (err, data) {
+    suggestionModel.find().populate("user","house").exec(function(err,data) {
         if (err) {
             console.log(err)
             res.json({

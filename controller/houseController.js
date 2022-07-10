@@ -3,9 +3,11 @@ const houseModel = require("../model/houseModel")
 //addHouse
 
 module.exports.addHouse = function (req, res) {
+    let user = req.body.user
     let houseDetails = req.body.houseDetails;
 
     let house = new houseModel({
+        "user": user,
         "houseDetails": houseDetails
     })
 
@@ -31,21 +33,23 @@ module.exports.addHouse = function (req, res) {
 //getAllHouses
 module.exports.getAllHouses = function (req, res) {
     houseModel.find(function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "Houses Retrived!!"
-            })
-        }
+        houseModel.find().populate("user").exec(function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Houses Retrived!!"
+                })
+            }
+        })
     })
 }
 

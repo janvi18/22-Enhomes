@@ -1,10 +1,10 @@
 const express = require("express")
-const mongoose=require("mongoose")
-const userController=require("./Controller/userController")
+const mongoose = require("mongoose")
+const userController = require("./Controller/userController")
 const suggestionController = require("./Controller/suggestionController")
-const roleController =require("./Controller/roleController")
-const staffController=require("./Controller/staffController")
-const maintenanceController=require("./Controller/maintenanceController")
+const roleController = require("./Controller/roleController")
+const staffController = require("./Controller/staffController")
+const maintenanceController = require("./Controller/maintenanceController")
 const houseController = require("./controller/houseController")
 const visitorController = require("./controller/visitorController")
 const deliveryController = require("./controller/deliveryController")
@@ -16,53 +16,52 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //Users Api
-app.get("/user",userController.getAllUsers)
-app.post("/user",userController.addUser)
-app.put("/user",userController.updateUser)
-app.delete("/user",userController.deleteUser)
+app.get("/user", userController.getAllUsers)
+app.post("/user", userController.addUser)
+app.put("/user", userController.updateUser)
+app.delete("/user", userController.deleteUser)
 
 //Suggestion Api
-app.get("/suggestion",suggestionController.getAllSuggestions)
-app.post("/suggestion",suggestionController.addSuggestion)
-app.put("/suggestion",suggestionController.updateSuggestion)
-app.delete("/suggestion",suggestionController.deleteSuggestion)
+app.get("/suggestion", suggestionController.getAllSuggestions)
+app.post("/suggestion", suggestionController.addSuggestion)
+app.put("/suggestion", suggestionController.updateSuggestion)
+app.delete("/suggestion", suggestionController.deleteSuggestion)
 
 //Role Api
-app.get("/role",roleController.getAllRoles)
-app.post("/role",roleController.addRole)
-app.put("/role",roleController.updateRole)
-app.delete("/role",roleController.deleteRole)
+app.get("/role", roleController.getAllRoles)
+app.post("/role", roleController.addRole)
+app.put("/role", roleController.updateRole)
+app.delete("/role", roleController.deleteRole)
 
 //Staff Api
-app.get("/staff",staffController.getAllStaff)
-app.post("/staff",staffController.addStaff)
-app.put("/staff",staffController.updateStaff)
-app.delete("/staff",staffController.deleteStaff)
+app.get("/staff", staffController.getAllStaff)
+app.post("/staff", staffController.addStaff)
+app.put("/staff", staffController.updateStaff)
+app.delete("/staff", staffController.deleteStaff)
 
 //Maintenance Api
-app.get("/maintenance",maintenanceController.getAllMaintenance)
-app.post("/maintenance",maintenanceController.addMaintenance)
-app.put("/maintenance",maintenanceController.updateMaintenance)
-app.delete("/maintenance",maintenanceController.deleteMaintenance)
+app.get("/maintenance", maintenanceController.getAllMaintenance)
+app.post("/maintenance", maintenanceController.addMaintenance)
+app.put("/maintenance", maintenanceController.updateMaintenance)
+app.delete("/maintenance", maintenanceController.deleteMaintenance)
 
 //House Api
-app.get("/house",houseController.getAllHouses)
-app.post("/house",houseController.addHouse)
-app.put("/house",houseController.updateHouse)
-app.delete("/house",houseController.deletehouse)
+app.get("/house", houseController.getAllHouses)
+app.post("/house", houseController.addHouse)
+app.put("/house", houseController.updateHouse)
+app.delete("/house", houseController.deletehouse)
 
 //Visitor Api
-app.get("/visitor",visitorController.getAllvisitors)
-app.post("/visitor",visitorController.addvisitor)
-app.put("/visitor",visitorController.getAllvisitors)
-app.delete("/visitor",visitorController.deletevisitor)
+app.get("/visitor", visitorController.getAllvisitors)
+app.post("/visitor", visitorController.addvisitor)
+app.put("/visitor", visitorController.getAllvisitors)
+app.delete("/visitor", visitorController.deletevisitor)
 
 //Delivery Api
-app.get("/delivery",deliveryController.getAlldeliverys)
-app.post("/delivery",deliveryController.adddelivery)
-app.get("/delivery",deliveryController.updatedelivery)
-app.delete("/delivery",deliveryController.deletedelivery)
-
+app.get("/delivery", deliveryController.getAlldeliverys)
+app.post("/delivery", deliveryController.adddelivery)
+app.get("/delivery", deliveryController.updatedelivery)
+app.delete("/delivery", deliveryController.deletedelivery)
 
 
 

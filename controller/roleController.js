@@ -1,51 +1,50 @@
-const roleModel=require("../Model/roleModel")
+const RoleModel = require("../Model/roleModel")
 
 //addRole
-module.exports.addRole = function(req,res){
-    let roleName=req.body.roleName;
+module.exports.addRole = function (req, res) {
+    let roleName = req.body.roleName;
 
-    let role = new roleModel({
-        "roleName":roleName
+    let role = new RoleModel({
+        "roleName": roleName
     })
 
-    role.save(function(err,data){
-        if(err){
+    role.save(function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong...."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
             })
         }
-        else{
-        res.json({
-            "status":200,
-            "data":data,
-            "msg":"Role Added!!"
-        })
-    }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "Role Added!!"
+            })
+        }
     })
 }
 
 
 //getAllRoles
-module.exports.getAllRoles=function(req,res){
-    roleModel.find(function(err,data){
-        if(err)
-        {
+module.exports.getAllRoles = function (req, res) {
+    RoleModel.find(function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                    "status":-1,
-                    "data":err,
-                    "msg":"Something went Wrong...."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
             })
         }
-        else{
+        else {
             res.json({
-                    "status":200,
-                    "data":data,
-                    "msg":"Roles Retrived!!"
-                })
+                "status": 200,
+                "data": data,
+                "msg": "Roles Retrived!!"
+            })
         }
     })
 }
@@ -53,50 +52,48 @@ module.exports.getAllRoles=function(req,res){
 
 
 //updateRole
-module.exports.updateRole=function(req,res){
-    let roleId=req.body.roleId
-    let roleName=req.body.roleName
+module.exports.updateRole = function (req, res) {
+    let roleId = req.body.roleId
+    let roleName = req.body.roleName
 
-    roleModel.updateOne({_id:roleId},{roleName:roleName},function(err,data){
-            if(err){
-                console.log(err)
-                res.json({
-                    "status":-1,
-                    "data":err,
-                    "msg":"Something went Wrong...."
-                })
-            }
-            else{
-                res.json({
-                    "status":200,
-                    "data":data,
-                    "msg":"Role Updated!!"
-                })
-            }
+    RoleModel.updateOne({ _id: roleId }, { roleName: roleName }, function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "Role Updated!!"
+            })
+        }
     })
 }
 
 
 
 //deleteRole
-module.exports.deleteRole=function(req,res){
-    let roleId=req.body.roleId
-    roleModel.deleteOne({_id:roleId},function(err,data){
-        if(err)
-        {
+module.exports.deleteRole = function (req, res) {
+    let roleId = req.body.roleId
+    RoleModel.deleteOne({ _id: roleId }, function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                    "data":err,
-                    "msg":"Somethong went Wrong...."
+                "status": -1,
+                "data": err,
+                "msg": "Somethong went Wrong...."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Role Deleted!!"
+                "status": 200,
+                "data": data,
+                "msg": "Role Deleted!!"
             })
         }
     })

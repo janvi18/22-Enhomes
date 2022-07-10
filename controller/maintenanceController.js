@@ -1,7 +1,8 @@
-const maintenanceModel = require("../model/maintenanceModel")
+const MaintenanceModel = require("../Model/maintenanceModel")
 
 //add Maintenance
 module.exports.addMaintenance = function (req, res) {
+    let house = req.body.house
     let creationDate = req.body.creationDate
     let month = req.body.month
     let maintenanceAmount = req.body.maintenanceAmount
@@ -10,7 +11,8 @@ module.exports.addMaintenance = function (req, res) {
     let lastDate = req.body.lastDate
     let fine = req.body.fine
 
-    let maintenance = new maintenanceModel({
+    let maintenance = new MaintenanceModel({
+        "house": house,
         "creationDate": creationDate,
         "month": month,
         "maintenanceAmount": maintenanceAmount,
@@ -53,7 +55,7 @@ module.exports.updateMaintenance = function (req, res) {
     let lastDate = req.body.lastDate
     let fine = req.body.fine
 
-    maintenanceModel.updateOne({ _id: maintenanceId }, {
+    MaintenanceModel.updateOne({ _id: maintenanceId }, {
         creationDate: creationDate, month: month,
         maintenanceAmount: maintenanceAmount, maintenancePaid: maintenancePaid, paymentDate: paymentDate,
         lastDate: lastDate, fine: fine
@@ -83,7 +85,7 @@ module.exports.updateMaintenance = function (req, res) {
 module.exports.deleteMaintenance = function (req, res) {
     let maintenanceId = req.body.maintenanceId
 
-    maintenanceModel.deleteOne({ _id: maintenanceId }, function (err, data) {
+    MaintenanceModel.deleteOne({ _id: maintenanceId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -105,7 +107,7 @@ module.exports.deleteMaintenance = function (req, res) {
 
 //List Maintenance
 module.exports.getAllMaintenance = function (req, res) {
-    maintenanceModel.find(function (err, data) {
+    MaintenanceModel.find().populate("house").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({

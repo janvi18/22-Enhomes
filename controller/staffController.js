@@ -1,50 +1,48 @@
-const staffModel=require("../Model/staffModel")
+const StaffModel = require("../Model/staffModel")
 
 //add Staff
-module.exports.addStaff=function(req,res){
-    let staffMemberName=req.body.staffMemberName
-    let type=req.body.type
-    let entryTime=req.body.entryTime
-    let exitTime=req.body.exitTime
-    let contactNo=req.body.contactNo
-    let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
-    let agencyName=req.body.agencyName
-    let agencyContactNumber=req.body.agencyContactNumber
+module.exports.addStaff = function (req, res) {
+    let staffMemberName = req.body.staffMemberName
+    let type = req.body.type
+    let entryTime = req.body.entryTime
+    let exitTime = req.body.exitTime
+    let contactNo = req.body.contactNo
+    let address = req.body.address
+    let email = req.body.email
+    let password = req.body.password
+    let isAllowed = req.body.isAllowed
+    let agencyName = req.body.agencyName
+    let agencyContactNumber = req.body.agencyContactNumber
 
 
-    let staff=new staffModel({
-        "staffMemberName":staffMemberName,
-        "type":type,
-        "entryTime":entryTime,
-        "exitTime":exitTime,
-        "contactNo":contactNo,
-        "address":address,
-        "email":email,
-        "password":password,
-        "isAllowed":isAllowed,
-        "agencyName":agencyName,
-        "agencyContactNumber":agencyContactNumber
+    let staff = new StaffModel({
+        "staffMemberName": staffMemberName,
+        "type": type,
+        "entryTime": entryTime,
+        "exitTime": exitTime,
+        "contactNo": contactNo,
+        "address": address,
+        "email": email,
+        "password": password,
+        "isAllowed": isAllowed,
+        "agencyName": agencyName,
+        "agencyContactNumber": agencyContactNumber
     })
 
-    staff.save(function(err,data){
-        if(err)
-        {
+    staff.save(function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Member Added!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Member Added!!"
             })
         }
     })
@@ -53,38 +51,37 @@ module.exports.addStaff=function(req,res){
 
 
 //update Staff
-module.exports.updateStaff=function(req,res){
-    let staffId=req.body.staffId
-    let staffMemberName=req.body.staffMemberName
-    let type=req.body.type
-    let entryTime=req.body.entryTime
-    let exitTime=req.body.exitTime
-    let contactNo=req.body.contactNo
-    let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
-    let agencyName=req.body.agencyName
-    let agencyContactNumber=req.body.agencyContactNumber
+module.exports.updateStaff = function (req, res) {
+    let staffId = req.body.staffId
+    let staffMemberName = req.body.staffMemberName
+    let type = req.body.type
+    let entryTime = req.body.entryTime
+    let exitTime = req.body.exitTime
+    let contactNo = req.body.contactNo
+    let address = req.body.address
+    let email = req.body.email
+    let password = req.body.password
+    let isAllowed = req.body.isAllowed
+    let agencyName = req.body.agencyName
+    let agencyContactNumber = req.body.agencyContactNumber
 
-    staffModel.updateOne({_id:staffId},{staffMemberName:staffMemberName, type:type,entryTime:entryTime, exitTime:exitTime,
-        contactNo:contactNo,address:address, email:email, password:password, isAllowed:isAllowed, agencyName:agencyName, agencyContactNumber:agencyContactNumber 
-    },function(err,data){
-        if(err)
-        {
+    StaffModel.updateOne({ _id: staffId }, {
+        staffMemberName: staffMemberName, type: type, entryTime: entryTime, exitTime: exitTime,
+        contactNo: contactNo, address: address, email: email, password: password, isAllowed: isAllowed, agencyName: agencyName, agencyContactNumber: agencyContactNumber
+    }, function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Member Updated!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Member Updated!!"
             })
         }
     })
@@ -93,25 +90,23 @@ module.exports.updateStaff=function(req,res){
 
 
 //Delete Staff
-module.exports.deleteStaff=function(req,res){
-    let staffId=req.body.staffId
+module.exports.deleteStaff = function (req, res) {
+    let staffId = req.body.staffId
 
-    staffModel.deleteOne({_id:staffId},function(err,data){
-        if(err)
-        {
+    StaffModel.deleteOne({ _id: staffId }, function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Member Deleted!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Member Deleted!!"
             })
         }
     })
@@ -120,23 +115,21 @@ module.exports.deleteStaff=function(req,res){
 
 
 //List Staff
-module.exports.getAllStaff=function(req,res){
-    staffModel.find(function(err,data){
-        if(err)
-        {
+module.exports.getAllStaff = function (req, res) {
+    StaffModel.find(function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Members Retrived!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Members Retrived!!"
             })
         }
     })
