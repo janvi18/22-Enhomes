@@ -1,5 +1,5 @@
 const RoleModel = require("../Model/roleModel")
-
+const validator = require("validator")
 //addRole
 module.exports.addRole = function (req, res) {
     let roleName = req.body.roleName;
@@ -8,23 +8,46 @@ module.exports.addRole = function (req, res) {
         "roleName": roleName
     })
 
-    role.save(function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "Role Added!!"
-            })
-        }
-    })
+    let isError = false
+    let err = []
+
+    if (roleName==undefined || validator.isAlpha(roleName) == false || roleName.trim().length == 0) {
+        isError = true;
+        err.push({
+            "RoleName Error": "Please Enter Valid Name"
+        })
+    }
+
+
+    if (isError == true) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        role.save(function(err,data){
+            if(err)
+            {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": rerr,
+                    "msg": "Something went Wrong..."
+                })
+            }
+            else
+            {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Role Added!!"
+                })
+            }
+        })
+    }
 }
 
 
@@ -56,23 +79,49 @@ module.exports.updateRole = function (req, res) {
     let roleId = req.body.roleId
     let roleName = req.body.roleName
 
-    RoleModel.updateOne({ _id: roleId }, { roleName: roleName }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
+    let isError = false
+    let err = []
+
+    if(roleName != undefined)
+    {
+        if (validator.isAlpha(roleName) == false || roleName.trim().length == 0)
+        {
+            isError = true;
+            err.push({
+                "RoleName Error": "Please Enter Valid Name"
             })
         }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "Role Updated!!"
-            })
+    }
+
+    if (isError == true) {
+
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        RoleModel.updateOne({ _id: roleId }, { roleName: req.body.roleName },function(err,data){
+            if(err)
+            {
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else
+            {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Role Updated!!"
+                })
+            }
         }
-    })
+        )
+    }
 }
 
 

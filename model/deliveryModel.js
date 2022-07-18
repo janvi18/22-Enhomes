@@ -1,17 +1,17 @@
-const mongoose=require("mongoose")
+const mongoose = require("mongoose")
 
-const deliverySchema=new mongoose.Schema({
-    couriertype:String,
-    isAllowed:String,
-    status:String,
+const deliverySchema = new mongoose.Schema({
+    couriertype: String,
+    isAllowed: Boolean,
+    status: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     },
     house: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "house"
+        ref: "House"
     },
 })
 
-module.exports=mongoose.model("Delivery",deliverySchema)
+module.exports = mongoose.model("Delivery", deliverySchema)

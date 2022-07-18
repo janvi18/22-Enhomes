@@ -26,7 +26,7 @@ module.exports.addInformations = function (req, res) {
         Address: "Address",
         City: "City",
         Pincode: "Pincode",
-        noOfHouse: "noOfHouse",
+        noOfHouse: "noOfHouse", 
         noOfBlocks: "noOfBlocks",
         EntryDate: "EntryDate"
     })
@@ -65,6 +65,7 @@ module.exports.updateInformations = function (req, res) {
     let EntryDate = req.body.EntryDate
 
 
+    
     newSociety.updateOne(
         { SocietyName: "SocietyName" },
         { SocietyId: "SocietyId" },

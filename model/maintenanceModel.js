@@ -7,7 +7,7 @@ const maintenanceSchema = new mongoose.Schema({
     maintenancePaid: Boolean,
     paymentDate: String,
     lastDate: String,
-    fine: Number,
+    penalty: Number,
     house: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "House"

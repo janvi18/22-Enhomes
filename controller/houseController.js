@@ -1,5 +1,5 @@
 const houseModel = require("../model/houseModel")
-
+const validator = require("validator")
 //addHouse
 
 module.exports.addHouse = function (req, res) {
@@ -11,23 +11,45 @@ module.exports.addHouse = function (req, res) {
         "houseDetails": houseDetails
     })
 
-    house.save(function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "House Added!!"
-            })
-        }
-    })
+
+    let isError = false;
+    let err = [];
+
+    if (houseDetails == undefined || houseDetails.trim().length == 0) {
+        isError = true;
+        err.push({
+            "HouseDetails Error": "Please Enter Valid Information"
+        })
+    }
+
+
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        house.save(function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "House Added!!"
+                })
+            }
+        })
+    }
 }
 
 //getAllHouses
@@ -60,23 +82,45 @@ module.exports.updateHouse = function (req, res) {
     let houseId = req.body.houseId
     let houseDetails = req.body.houseDetails
 
-    houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
+    isError = false;
+    let err = [];
+
+    if (houseDetails != undefined) {
+        if (houseDetails.trim().length == 0) {
+            isError = true;
+            err.push({
+                "HouseDetails Error": "Please Enter Valid Information"
             })
         }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "House Updated!!"
-            })
-        }
-    })
+    }
+
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails }, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "House Updated!!"
+                })
+            }
+        })
+    }
 }
 
 

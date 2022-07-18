@@ -1,13 +1,14 @@
 const deliveryModel = require("../model/deliveryModel")
+const validator= require("validator")
 
 //adddelivery
 
 module.exports.adddelivery = function (req, res) {
     let user = req.body.user
     let house = req.body.house
-    let couriertype = req.body.couriertype;
-    isAllowed = req.body.isAllowed,
-        status = req.body.status
+    let couriertype = req.body.couriertype
+    let isAllowed = req.body.isAllowed
+    let status = req.body.status
 
 
 
@@ -19,28 +20,72 @@ module.exports.adddelivery = function (req, res) {
         "status": status
     })
 
-    delivery.save(function (err, data) {
-        if (err) {
-            console.log(err)
+    let isError=false;
+    let err=[];
+
+    if(couriertype==undefined || validator.isAlpha(couriertype)==false || couriertype.trim().length==0)
+    {
+        isError=true;
+        err.push({
+            "Couriertype Error":"Please Enter Valid Type"
+        })
+    }
+    if(isAllowed==undefined)
+    {
+        isError=true;
+        err.push({
+            "isAllowed Error":"Please Enter Valid Information"
+        }) 
+    }
+    if(isAllowed != "false" && isAllowed != "true")
+    {
+        isError=true;
+        err.push({
+            "isAllowed Error":"Please Enter Valid Information"
+        }) 
+    }
+    if(status==undefined || validator.isAlpha(status)==false || status.trim().length==0)
+    {
+        isError=true;
+        err.push({
+            "Status Error":"Please Enter Valid Status"
+        })
+    }
+
+    if(isError)
+    {
+        console.log(err)
             res.json({
                 "status": -1,
                 "data": err,
                 "msg": "Something went Wrong...."
             })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "Delivery Added!!"
-            })
-        }
-    })
+    }
+    else
+    {
+        delivery.save(function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Delivery Added!!"
+                })
+            }
+        })
+    }
 }
 
 //getAlldeliverys
 module.exports.getAlldeliverys = function (req, res) {
-    deliveryModel.find().populate("user","house").exec(function(err,data) {
+    deliveryModel.find().populate("user").populate("house").exec(function(err,data) {
         if (err) {
             console.log(err)
             res.json({
@@ -63,28 +108,79 @@ module.exports.getAlldeliverys = function (req, res) {
 
 //update delivery
 module.exports.updatedelivery = function (req, res) {
+    
     let deliveryId = req.body.deliveryId
     let couriertype = req.body.couriertype
     let isAllowed = req.body.isAllowed
     let status = req.body.status
 
-    deliveryModel.updateOne({ _id: deliveryId }, { couriertype: couriertype }, { isAllowed: isAllowed }, { status: status }, function (err, data) {
-        if (err) {
-            console.log(err)
+    let isError=false;
+    let err=[];
+
+
+    if(couriertype != undefined)
+    {
+        if(validator.isAlpha(couriertype)==false || couriertype.trim().length==0)
+        {
+            isError=true;
+            err.push({
+                "Couriertype Error":"Please Enter Valid Type"
+            })
+        }
+    }
+
+    if(isAllowed != undefined)
+    {
+        if(isAllowed != "false" && isAllowed != "true")
+        {
+            isError=true;
+            err.push({
+                "isAllowed Error":"Please Enter Valid Information"
+            }) 
+        }
+    }
+
+    if(status != undefined)
+    {
+        if(status==undefined || validator.isAlpha(status)==false || status.trim().length==0)
+        {
+            isError=true;
+            err.push({
+                "Status Error":"Please Enter Valid Status"
+            })
+        }
+    }
+
+
+    if(isError)
+    {
+        console.log(err)
             res.json({
                 "status": -1,
                 "data": err,
                 "msg": "Something went Wrong...."
             })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "Delivery Updated!!"
-            })
-        }
-    })
+    }
+    else
+    {
+        deliveryModel.updateOne({ _id: deliveryId }, { couriertype: couriertype,isAllowed: isAllowed,status: status}, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Delivery Updated!!"
+                })
+            }
+        })
+    }
 }
 
 

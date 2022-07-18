@@ -15,7 +15,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-//Users Api
+//User Api
 app.get("/user", userController.getAllUsers)
 app.post("/user", userController.addUser)
 app.put("/user", userController.updateUser)
@@ -54,13 +54,13 @@ app.delete("/house", houseController.deletehouse)
 //Visitor Api
 app.get("/visitor", visitorController.getAllvisitors)
 app.post("/visitor", visitorController.addvisitor)
-app.put("/visitor", visitorController.getAllvisitors)
+app.put("/visitor", visitorController.updatevisitor)
 app.delete("/visitor", visitorController.deletevisitor)
 
 //Delivery Api
 app.get("/delivery", deliveryController.getAlldeliverys)
 app.post("/delivery", deliveryController.adddelivery)
-app.get("/delivery", deliveryController.updatedelivery)
+app.put("/delivery", deliveryController.updatedelivery)
 app.delete("/delivery", deliveryController.deletedelivery)
 
 

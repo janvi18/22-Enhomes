@@ -1,8 +1,8 @@
 const UserModel = require("../Model/userModel")
+const validator = require("validator")
 
 //add User
 module.exports.addUser = function (req, res) {
-    let flatNo = req.body.flatNo
     let role = req.body.role
     let house = req.body.house
     let firstName = req.body.firstName
@@ -12,10 +12,10 @@ module.exports.addUser = function (req, res) {
     let gender = req.body.gender
     let contactNo = req.body.contactNo
     let email = req.body.email
+    let password = req.body.password
 
 
     let user = new UserModel({
-        "flatNo": flatNo,
         "role": role,
         "house": house,
         "firstName": firstName,
@@ -27,23 +27,85 @@ module.exports.addUser = function (req, res) {
         "email": email
     })
 
-    user.save(function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "User Added!!"
-            })
-        }
-    })
+    let isError = false;
+    let err = [];
+
+    if (firstName == undefined || validator.isAlpha(firstName) == false || firstName.trim().length == 0) {
+        isError = true;
+        err.push({
+            "FirstName Error": "Please Enter Valid Name"
+        })
+    }
+    if (lastName == undefined || validator.isAlpha(lastName) == false || lastName.trim().length == 0) {
+        isError = true;
+        err.push({
+            "LastName Error": "Please Enter Valid Name"
+        })
+    }
+    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
+        isError = true;
+        err.push({
+            "DateOfBirth Error": "Enter Valid Date"
+        })
+    }
+    if (age == undefined || validator.isNumeric(age.toString()) == false) {
+        isError = true;
+        err.push({
+            "Age Error": "Please Enter Valid Age"
+        })
+    }
+    if (gender == undefined || gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+        isError = true;
+        err.push({
+            "Gender Error": "Please Enter Valid Gender"
+        })
+    }
+    if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+        isError = true;
+        err.push({
+            "ContactNo Error": "Please Enter Valid ContactNo"
+        })
+    }
+    if (email == undefined || validator.isEmail(email) == false) {
+        isError = true;
+        err.push({
+            "Email Error": "Please Enter Valid Email"
+        })
+    }
+    if (password == undefined || validator.isAlpha(password) == false || password.trim().length == 0) {
+        isError = true;
+        err.push({
+            "Password Error": "Please Enter Valid Password"
+        })
+    }
+
+
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong..."
+        })
+    }
+    else {
+        user.save(function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong..."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "User Added!!"
+                })
+            }
+        })
+    }
 }
 
 
@@ -59,25 +121,111 @@ module.exports.updateUser = function (req, res) {
     let gender = req.body.gender
     let contactNo = req.body.contactNo
     let email = req.body.email
+    let password = req.body.password
 
-    UserModel.updateOne({ _id: userId }, { firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, age: age, gender: gender, contactNo: contactNo, email: email }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
+    let isError = false;
+    let err = [];
+
+    if (firstName != undefined) {
+        if (validator.isAlpha(firstName) == false || firstName.trim().length == 0) {
+            isError = true;
+            err.push({
+                "FirstName Error": "Please Enter Valid Name"
             })
         }
-        else {
-            res.json({
-                "status": 200,
-                "data": data,
-                "msg": "User Information Updated!!"
+    }
+
+    if (lastName != undefined) {
+        if (validator.isAlpha(lastName) == false || lastName.trim().length == 0) {
+            isError = true;
+            err.push({
+                "LastName Error": "Please Enter Valid Name"
             })
         }
-    })
+    }
 
+    if (dateOfBirth != undefined) {
+        if (validator.isDate(dateOfBirth) == false) {
+            isError = true;
+            err.push({
+                "DateOfBirth Error": "Enter Valid Date"
+            })
+        }
+    }
+
+    if (age != undefined) {
+        if (validator.isNumeric(age.toString()) == false) {
+            isError = true;
+            err.push({
+                "Age Error": "Please Enter Valid Age"
+            })
+        }
+    }
+
+    if (gender != undefined) {
+        if (gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+            isError = true;
+            err.push({
+                "Gender Error": "Please Enter Valid Gender"
+            })
+        }
+    }
+
+    if (contactNo != undefined) {
+        if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+            isError = true;
+            err.push({
+                "ContactNo Error": "Please Enter Valid ContactNo"
+            })
+        }
+    }
+
+    if (email != undefined) {
+        if (validator.isEmail(email) == false) {
+            isError = true;
+            err.push({
+                "Email Error": "Please Enter Valid Email"
+            })
+        }
+    }
+
+    if (password != undefined) {
+        if (validator.isAlpha(password) == false || password.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Password Error": "Please Enter Valid Password"
+            })
+        }
+    }
+
+
+
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        UserModel.updateOne({ _id: userId }, { "firstName": firstName, "lastName": lastName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo, "email": email }, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "User Information Updated!!"
+                })
+            }
+        })
+    }
 }
 
 
