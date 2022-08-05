@@ -8,6 +8,7 @@ const maintenanceController = require("./Controller/maintenanceController")
 const houseController = require("./controller/houseController")
 const visitorController = require("./controller/visitorController")
 const deliveryController = require("./controller/deliveryController")
+const placeController = require("./controller/placeController")
 
 
 const app = express()
@@ -63,9 +64,16 @@ app.post("/delivery", deliveryController.adddelivery)
 app.put("/delivery", deliveryController.updatedelivery)
 app.delete("/delivery", deliveryController.deletedelivery)
 
+//Place Api
+app.get("/place", placeController.getAllPlaces)
+app.post("/place", placeController.addPlace)
+app.put("/place", placeController.updatePlace)
+app.delete("/place", placeController.deletePlace)
 
+const localDb = "mongodb://localhost/e-society-22"; 
+const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
 
-mongoose.connect("mongodb://localhost/e-society-22", function (err) {
+mongoose.connect(liveDb, function (err) {
     if (err) {
         console.log(err)
         console.log("Something Went Wrong....")
