@@ -1,4 +1,4 @@
-const StaffModel=require("../Model/staffModel")
+const StaffModel=require("../model/staffModel")
 const validator=require("validator")
 
 //add Staff

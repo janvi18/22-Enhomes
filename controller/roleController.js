@@ -1,4 +1,4 @@
-const RoleModel = require("../Model/roleModel")
+const RoleModel = require("../model/roleModel")
 const validator = require("validator")
 //addRole
 module.exports.addRole = function (req, res) {

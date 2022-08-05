@@ -1,4 +1,4 @@
-const UserModel = require("../Model/userModel")
+const UserModel = require("../model/userModel")
 const validator = require("validator")
 
 //add User
