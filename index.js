@@ -83,8 +83,8 @@ mongoose.connect(liveDb, function (err) {
     }
 })
 
-
-app.listen(9999, function (err) {
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, function (err) {
     if (err) {
         console.log(err)
         console.log("Something Went Wrong....")
