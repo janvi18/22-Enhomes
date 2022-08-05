@@ -1,4 +1,4 @@
-const MaintenanceModel = require("../Model/maintenanceModel")
+const MaintenanceModel = require("../model/maintenanceModel")
 const validator = require("validator")
 
 //add Maintenance
