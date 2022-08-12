@@ -1,5 +1,10 @@
 const express = require("express")
 const mongoose = require("mongoose")
+
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+
+
 const userController = require("./controller/userController")
 const suggestionController = require("./controller/suggestionController")
 const roleController = require("./controller/roleController")
@@ -83,7 +88,7 @@ mongoose.connect(liveDb, function (err) {
     }
 })
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, function (err) {
     if (err) {
         console.log(err)
@@ -93,3 +98,9 @@ app.listen(PORT, function (err) {
         console.log("Server Started 9999")
     }
 })
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+
+//npm run swagger-autogen 
+
