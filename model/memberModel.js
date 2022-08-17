@@ -1,13 +1,17 @@
 const mongoose = require("mongoose")
 
-const SocietySchema = new  mongoose.Schema({
-    member_id:Number,
-    houseid:Number,
-    membername:String,
-    dob:Number,
-    age:Number,
-    gender:String,
-    contactno:Number
-})
+const memberSchema = new mongoose.Schema({
+    memberid: String,
+    memberName: String,
+    dateOfBirth: String,
+    age: Number,
+    gender: String,
+    contactNo: Number,
 
-module.exports= mongoose.model ("member",SocietySchema)
+    house: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "House"
+    }
+
+})
+module.exports = mongoose.model("member", memberSchema)

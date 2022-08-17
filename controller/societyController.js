@@ -1,145 +1,204 @@
-//SocietyName
-//SocietyId
-//Address
-//City
-//Pincode
-//noOfHouse
-//noOfBlocks
-//EntryDate
+const MemberModel = require("../model/memberModel")
+const validator = require("validator")
 
-//add
-const Societymodule = require("../model/societyModel")
+//add member
+module.exports.addMember = function (req, res) {
 
-module.exports.addInformations = function (req, res) {
-    let SocietyName = req.body.SocietyName
-    let SocietyId = req.body.SocietyId
-    let Address = req.body.Address
-    let City = req.body.City
-    let Pincode = req.body.Pincode
-    let noOfHouse = req.body.noOfHouse
-    let noOfBlocks = req.body.noOfBlocks
-    let EntryDate = req.body.EntryDate
+    let house = req.body.houseId
+    let memberName = req.body.memberName
+    let dateOfBirth = req.body.dateOfBirth
+    let age = req.body.age
+    let gender = req.body.gender
+    let contactNo = req.body.contactNo
 
-    let newSociety = new SocietyModule({
-        SocietyName: "SocietyName",
-        SocietyId: "SocietyId",
-        Address: "Address",
-        City: "City",
-        Pincode: "Pincode",
-        noOfHouse: "noOfHouse", 
-        noOfBlocks: "noOfBlocks",
-        EntryDate: "EntryDate"
-    })
-    newSociety.save(function (err, data) {
+    let member = new MemberModel({
 
-        if (err) {
-            console.log(err)
-            res.json({
-                msg: "Society information not valid",
-                status: -1,
-                data: "fill up all informations"
-            })
-        }
-        else {
-            res.json({
-                msg: "Society information added",
-                status: 200,
-                data: data
-            })
-        }
+        "house": house,
+        "memberName": memberName,
+        "dateOfBirth": dateOfBirth,
+        "age": age,
+        "gender": gender,
+        "contactNo": contactNo,
+
     })
 
-}//add
+    let isError = false;
+    let err = [];
 
-//update
-module.exports.updateInformations = function (req, res) {
+    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
+        isError = true;
+        err.push({
+            "DateOfBirth Error": "Enter Valid Date"
+        })
+    }
+    if (age == undefined || validator.isNumeric(age.toString()) == false) {
+        isError = true;
+        err.push({
+            "Age Error": "Please Enter Valid Age"
+        })
+    }
+    if (gender == undefined || gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+        isError = true;
+        err.push({
+            "Gender Error": "Please Enter Valid Gender"
+        })
+    }
+    if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+        isError = true;
+        err.push({
+            "ContactNo Error": "Please Enter Valid ContactNo"
+        })
+    }
+    if (memberName == undefined || validator.isAlpha(memberName) == false || memberName.trim().length == 0) {
+        isError = true;
+        err.push({
+            "memberName error": "Please enter member name"
+        })
+    }
 
-
-    let SocietyName = req.body.SocietyName
-    let SocietyId = req.body.SocietyId
-    let Address = req.body.Address
-    let City = req.body.City
-    let Pincode = req.body.Pincode
-    let noOfHouse = req.body.noOfHouse
-    let noOfBlocks = req.body.noOfBlocks
-    let EntryDate = req.body.EntryDate
-
-
-    
-    newSociety.updateOne(
-        { SocietyName: "SocietyName" },
-        { SocietyId: "SocietyId" },
-        { Address: "Address" },
-        { City: "City" },
-        { Pincode: "Pincode" },
-        { noOfBlocks: "noOfBlocks" },
-        { noOfHouse: "noOfHouse" },
-        { EntryDate: "EntryDate" },
-
-        function (err, data) {
-
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong..."
+        })
+    }
+    else {
+        member.save(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
-                    msg: "Society information not valid",
-                    status: -1,
-                    data: "fill up all informations"
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong..."
                 })
             }
             else {
                 res.json({
-                    msg: "Society information added",
-                    status: 200,
-                    data: data
+                    "status": 200,
+                    "data": data,
+                    "msg": "Member Added!!"
                 })
             }
         })
+    }
+}
 
-}//update
 
+//Update User
+module.exports.updateMember = function (req, res) {
+    let memberId = req.body.memberId
+    let dateOfBirth = req.body.dateOfBirth
+    let age = req.body.age
+    let gender = req.body.gender
+    let contactNo = req.body.contactNo
 
-//delete
-module.exports.deleteSociety = function (req, res) {
-    Societymodule.deleteOne({ id_SocietyId }, function (err, data) {
+    let isError = false;
+    let err = [];
+    if (dateOfBirth != undefined) {
+        if (validator.isDate(dateOfBirth) == false) {
+            isError = true;
+            err.push({
+                "DateOfBirth Error": "Enter Valid Date"
+            })
+        }
+    }
+
+    if (age != undefined) {
+        if (validator.isNumeric(age.toString()) == false) {
+            isError = true;
+            err.push({
+                "Age Error": "Please Enter Valid Age"
+            })
+        }
+    }
+
+    if (gender != undefined) {
+        if (gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+            isError = true;
+            err.push({
+                "Gender Error": "Please Enter Valid Gender"
+            })
+        }
+    }
+
+    if (contactNo != undefined) {
+        if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+            isError = true;
+            err.push({
+                "ContactNo Error": "Please Enter Valid ContactNo"
+            })
+        }
+    }
+
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        MemberModel.updateOne({ _id: memberId }, { "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo }, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "User Information Updated!!"
+                })
+            }
+        })
+    }
+}
+
+//Delete User
+module.exports.deleteMember = function (req, res) {
+    let memberId = req.body.memberId
+
+    MemberModel.deleteOne({ _id: memberId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
-                msg: "Enter valid informations",
-                status: -1,
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
             })
         }
         else {
             res.json({
-                msg: "Information delete",
-                status: -1,
-                data: data
-
+                "status": 200,
+                "data": data,
+                "msg": "User Information Deleted!!"
             })
         }
-
     })
-}//delete
+}
 
-//getAllInformations
-module.exports.getAllInformations = function (req, res) {
-    Societymodule.find(function (err, data) {
-
+//List Mmebers
+module.exports.getAllMembers = function (req, res) {
+    MemberModel.find().populate("house").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
-                msg: "Enter valid informations",
-                status: -1,
-                data: err
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
             })
         }
         else {
             res.json({
-                msg: "This is your all information",
-                status: -1,
-                data: data
-
+                "status": 200,
+                "data": data,
+                "msg": "Member Retrived!!"
             })
         }
     })
-
-}//getAllInformations
+}

@@ -1,14 +1,12 @@
 const mongoose = require("mongoose")
 
-const SocietySchema = new mongoose.Schema({
-SocietyName:String,
-SocietyId:Number,
-Address:String,
-City:String,
-Pincode:Number,
-noOfHouse:Number,
-noOfBlocks:Number,
-EntryDate:Date
-})
+const societySchema = new mongoose.Schema({
+    societyId: String,
+    societyName: String,
+    address: String,
+    city: String,
+    noOfHouse: Number,
+    pincode: Number,
 
-module.exports = mongoose.model("Society",SocietySchema)
+})
+module.exports = mongoose.model("society", societySchema)

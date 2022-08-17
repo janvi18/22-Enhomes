@@ -1,144 +1,213 @@
-//eventId
-//HouseId
-//userId
-//eventdate
-//eventenddate
-//eventdetils
-//rent
-//isavailable
+const eventModel = require("../model/eventModel")
+const validator = require("validator")
 
+module.exports.addEvent = function (req, res) {
 
-//add
-const EventModule = require("../model/eventModel")
-
-module.exports.Addevent = function (req, res) {
-
-    let eventId = req.body.eventId
-    let houseId = req.body.houseId
-    let userId = req.body.userId
+    let user = req.body.user
+    let house = req.body.house
+    let place = req.body.place
     let eventDate = req.body.eventDate
     let eventEndDate = req.body.eventEndDate
     let eventDetails = req.body.eventDetails
     let rent = req.body.rent
     let isAvailable = req.body.isAvailable
 
-    let newevent = new EventModule({
-
-        "eventId": eventId,
-        "houseId": houseId,
-        "userId": userId,
+    let event = new eventModel({
+        "user": user,
+        "house": house,
+        "place": place,
         "eventDate": eventDate,
         "eventEndDate": eventEndDate,
         "eventDetails": eventDetails,
         "rent": rent,
-        "isAvailable": isAvailable
+        "isAvailable": isAvailable,
     })
 
-    newevent.save(function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                msg: "Event Information Emty",
-                status: -1,
-                data: err
-            })
-        }
-        else {
-            res.json({
-                msg: "Event Added",
-                status: 200,
-                data: data
-            })
-        }
-    })
+    let isError = false;
+    let err = [];
+
+    if (eventDate == undefined || validator.isDate(eventDate) == false) {
+        isError = true;
+        err.push({
+            "eventDate Error": "Enter Valid Date"
+        })
+    }
+    if (eventEndDate == undefined || validator.isDate(eventEndDate) == false) {
+        isError = true;
+        err.push({
+            "eventEndDate Error": "Please Enter Valid Date"
+        })
+    }
+    if (isAvailable == undefined || validator.isAlpha(isAvailable) == false || isAvailable.trim().length == 0) {
+        isError = true;
+        err.push({
+            "Status Error": "Please Enter Valid Status"
+        })
+    }
+    if (eventDetails == undefined || validator.isAlpha(eventDetails) == false || eventDetails.trim().length == 0) {
+        isError = true;
+        err.push({
+            "eventDetails Error": "Please Enter Valid Details"
+        })
+    }
+    if (rent == undefined || validator.isNumeric(rent.toString()) == false || rent.trim().length == 0) {
+        isError = true;
+        err.push({
+            "Rent Error": "Please Enter Valid Rent Amount"
+        })
+    }
+
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        event.save(function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Event Added!!"
+                })
+            }
+        })
+    }
 }
-//add
 
-//getAllEvents
+//getAllevent
 module.exports.getAllEvents = function (req, res) {
-    EventModule.fing(function (err, data) {
+    eventModel.find().populate("user").populate("house").populate("place").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
-                msg: "null",
-                status: -1,
-                data: err
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
             })
         }
         else {
             res.json({
-                msg: "This is all available events",
-                status: 200,
-                data: data
+                "status": 200,
+                "data": data,
+                "msg": "Events Retrived!!"
             })
         }
     })
 }
-//getAllEvent
 
-
-//delete
-module.exports.deleteEvent = function (req, res) {
-    EventModule.deleteOne({ id_evenId }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                msg: "Event not canceled",
-                status: -1,
-                data: err
-            })
-        }
-        else {
-            res.json({
-                msg: "Event Cancle",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}
-//delete
-
-
-//update
+//update event
 module.exports.updateEvent = function (req, res) {
+
     let eventId = req.body.eventId
-    let houseId = req.body.houseId
-    let userId = req.body.userId
     let eventDate = req.body.eventDate
     let eventEndDate = req.body.eventEndDate
     let eventDetails = req.body.eventDetails
     let rent = req.body.rent
     let isAvailable = req.body.isAvailable
 
-    EventModule.updateOne(
-        { eventId: "eventId" },
-        { houseId: "houseId" },
-        { userId: "userId" },
-        { eventDate: "eventDate" },
-        { eventEndDate: "eventEndDate" },
-        { eventDetails: "eventDetails" },
-        { rent: "rent" },
-        { isAvailable: "isAvailable" },
+    let isError = false;
+    let err = [];
+    if (eventDate != undefined) {
+        if (eventDate == undefined || validator.isDate(eventDate) == false) {
+            isError = true;
+            err.push({
+                "Date Error": "Enter Valid Date"
+            })
+        }
+    }
+    if (eventEndDate != undefined) {
+        if (eventEndDate == undefined || validator.isDate(eventEndDate) == false) {
+            isError = true;
+            err.push({
+                "End Date Error": "Enter Valid End Date"
+            })
+        }
+    }
+    if (eventDetails != undefined) {
+        if (validator.isAlpha(eventDetails) == false || eventDetails.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Event Detail Error": "Please Enter Valid information"
+            })
+        }
+    }
 
-        function (err, data) {
+    if (rent != undefined) {
+        if (rent == undefined || rent.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Rent error": "Enter Valid Amount"
+            })
+        }
+    }
 
+    if (isAvailable != undefined) {
+        if (isAvailable == undefined || validator.isAlpha(isAvailable) == false || isAvailable.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Status Error": "Please Enter Valid Status"
+            })
+        }
+    }
+
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        eventModel.updateOne({ _id: eventId }, { eventDate: eventDate, eventEndDate: eventEndDate, eventDetails: eventDetails, rent: rent, isAvailable: isAvailable }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
-                    msg: "Enter valid informations",
-                    status: -1,
-                    data: err
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
                 })
             }
             else {
                 res.json({
-                    msg: "Event Added",
-                    status: 200,
-                    data: data
+                    "status": 200,
+                    "data": data,
+                    "msg": "event Updated!!"
                 })
             }
-        }
-    )
+        })
+    }
 }
-//update
+//deleteevent
+module.exports.deleteEvent = function (req, res) {
+    let eventId = req.body.eventId
+    eventModel.deleteOne({ _id: eventId }, function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Somethong went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": " Deleted!!"
+            })
+        }
+    })
+}
