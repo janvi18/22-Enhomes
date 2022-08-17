@@ -1,116 +1,195 @@
-//complainNo.
-//date
-//membername
-//complain
+const complaintModel = require("../model/complaintModel")
+const validator = require("validator")
 
+module.exports.addcomplaint = function (req, res) {
 
-//add
-const ComplainModule = require("../model/complainModel")
+    let user = req.body.user
+    let house = req.body.house
+    let date = req.body.date
+    let complaint = req.body.complaint
+    let isResolved = req.body.isResolved
 
-module.exports.Addcomplains = function (req, res) {
+    console.log(req.body)
 
-    let ComplainNo = req.body.ComplainNo
-    let ComplainDate = req.body.ComplainDate
-    let MemberName = req.body.MemberName
-    let Complain = req.body.Complain
+    let complaintName = new complaintModel({
 
-    let newcomplain = new ComplainModule({
-        "ComplainNo": ComplainNo, "ComplainDate": ComplainDate, "MemberName": MemberName, "Complain": Complain
+        "user": user,
+        "house": house,
+        "date": date,
+        "complaint": complaint,
+        "isResolved": isResolved
     })
 
-    newcomplain.save(function (error, data) {
+    let isError = false;
+    let err = [];
 
-        if (error) {
-            console.log(error)
-            res.json({
-                msg: "unvalid informations",
-                status: -1,
-                data: "fill all requirments"
-            })
-        }
-        else {
-            res.json({
-                msg: "complain granted",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}//add
+    if (date == undefined || validator.isDate(date) == false) {
+        isError = true;
+        err.push({
+            "Date Error": "Enter Valid Date"
+        })
+    }
+    if (complaint == undefined || complaint.trim().length == 0) {
+        isError = true;
+        err.push({
+            "complaint Error": "Please Enter Valid complaint"
+        })
+    }
+    if (isResolved == undefined || validator.isAlpha(isResolved) == false || isResolved.trim().length == 0) {
+        isError = true;
+        err.push({
+            "Status Error": "Please Enter Valid Status"
+        })
+    }
 
-//getAllComplains
-module.exports.getAllComplains = function (req, res) {
-    ComplainModule.find(function (err, data) {
-        console.log(error)
-        if (err) {
-            res.json({
-                msg: "none",
-                status: -1,
-            })
-        }
-        else {
-            res.json({
-                msg: "All complains",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}//getAllComplains
-
-//deletComplains
-module.exports.deleteComplain = function (req, res) {
-
-    ComplainModule.deleteOne({ id_ComplainId }, function (error, data) {
-
-        if (err) {
-            console.log(err)
-            res.json({
-                msg: "complain not deleted",
-                status: -1,
-                data: id_ComplainId
-            })
-        }
-        else {
-            res.json({
-                msg: "complain remove",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}//delete complains
-
-//update
-module.exports.updateComplain = function (req, res) {
-    let ComplainNo = req.body.ComplainNo
-    let ComplainDate = req.body.ComplainDate
-    let MemberName = req.body.MemberName
-    let complain = req.body.Complain
-
-    ComplainModule.updateOne(
-        { ComplainNo: "ComplainNo" },
-        { ComplainDate: "ComplainDate" },
-        { MemberName: "MemberName" },
-        { Complain: "Complain" },
-        function (err, data) {
-
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        complaintName.save(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
-                    msg: "complain denied",
-                    status: -1,
-                    //data:data
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
                 })
             }
             else {
                 res.json({
-                    msg: "Complain updated",
-                    status: 200,
-                    data: data
+                    "status": 200,
+                    "data": data,
+                    "msg": "Complain Added!!"
                 })
             }
-        }
-    )
+        })
+    }
 }
-//update
+
+//getAllcomplaint
+module.exports.getAllcomplaint = function (req, res) {
+    complaintModel.find().populate("user").populate("house").exec(function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "Complains Retrived!!"
+            })
+        }
+    })
+}
+
+
+//update complaint
+module.exports.updatecomplaint = function (req, res) {
+
+    let complaintId = req.body.complaintId
+    let date = req.body.date
+    let complaint = req.body.complaint
+    let isResolved = req.body.isResolved
+
+
+    let isError = false;
+    let err = [];
+
+    if (complaintId != undefined) {
+        if (complaintId == undefined || complaintId.trim().length == 0) {
+            isError = true;
+            err.push({
+                "complainId Error": "Please Enter Valid complaintId"
+            })
+        }
+    }
+
+
+    if (complaint != undefined) {
+        if (validator.isAlpha(complaint) == false || complaint.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Complaint Error": "Please Enter Valid Type"
+            })
+        }
+    }
+
+    if (date != undefined) {
+        if (date == undefined || date.trim().length == 0) {
+            isError = true;
+            err.push({
+                "date Error": "Please Enter Valid Information"
+            })
+        }
+    }
+
+    if (isResolved != undefined) {
+        if (isResolved == undefined || validator.isAlpha(isResolved) == false || isResolved.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Status Error": "Please Enter Valid Status"
+            })
+        }
+    }
+
+
+    if (isError) {
+        console.log(err)
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        complaintModel.updateOne({ _id: complaintId }, { date: date, complaint: complaint, isResolved: isResolved }, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "Complaint Updated!!"
+                })
+            }
+        })
+    }
+}
+
+//delete complaint
+module.exports.deletecomplaint = function (req, res) {
+    let complaintId = req.body.complaintId
+    complaintModel.deleteOne({ _id: complaintId }, function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Somethong went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "Complaint Deleted!!"
+            })
+        }
+    })
+}

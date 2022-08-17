@@ -4,7 +4,6 @@ const mongoose = require("mongoose")
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 
-
 const userController = require("./controller/userController")
 const suggestionController = require("./controller/suggestionController")
 const roleController = require("./controller/roleController")
@@ -14,12 +13,21 @@ const houseController = require("./controller/houseController")
 const visitorController = require("./controller/visitorController")
 const deliveryController = require("./controller/deliveryController")
 const placeController = require("./controller/placeController")
-
+const sessionController = require("./Controller/sessionController")
+const complaintController = require("./controller/complaintController")
+const eventController = require("./controller/eventController")
+const memberController = require("./controller/memberController")
+const societyController = require("./controller/societyController")
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+//Session Api
+app.get("/session", sessionController.getAllUsers)
+app.post("/signup", sessionController.signup)
+app.post("/login", sessionController.login)
 
 //User Api
 app.get("/user", userController.getAllUsers)
@@ -75,7 +83,31 @@ app.post("/place", placeController.addPlace)
 app.put("/place", placeController.updatePlace)
 app.delete("/place", placeController.deletePlace)
 
-const localDb = "mongodb://localhost/e-society-22"; 
+//event Api
+app.post("/event", eventController.addEvent)
+app.put("/event", eventController.updateEvent)
+app.get("/event", eventController.getAllEvents)
+app.delete("/event", eventController.deleteEvent)
+
+//Complain Api
+app.post("/complaint", complaintController.addcomplaint)
+app.put("/complaint", complaintController.updatecomplaint)
+app.get("/complaint", complaintController.getAllcomplaint)
+app.delete("/complaint", complaintController.deletecomplaint)
+
+//Member Api
+app.post("/member", memberController.addMember)
+app.put("/member", memberController.updateMember)
+app.get("/member", memberController.getAllMembers)
+app.delete("/member", memberController.deleteMember)
+
+//society Api
+app.post("/society", societyController.addSociety)
+app.put("/society", societyController.updateSociety)
+app.get("/society", societyController.getAllSociety)
+app.delete("/society", societyController.deleteSociety)
+
+const localDb = "mongodb://localhost/e-society-22";
 const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
 
 mongoose.connect(liveDb, function (err) {
