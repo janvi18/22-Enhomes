@@ -1,132 +1,150 @@
-const MemberModel = require("../model/memberModel")
+const societyModel = require("../model/societyModel")
 const validator = require("validator")
 
-//add member
-module.exports.addMember = function (req, res) {
+//addSociety
+module.exports.addSociety = function(req,res){
+//let societyId = req.body.societyId
+let societyName = req.body.societyName
+let address = req.body.address
+let city = req.body.city
+let pincode = req.body.pincode
+let noOfHouse = req.body.noOfHouse
 
-    let house = req.body.houseId
-    let memberName = req.body.memberName
-    let dateOfBirth = req.body.dateOfBirth
-    let age = req.body.age
-    let gender = req.body.gender
-    let contactNo = req.body.contactNo
 
-    let member = new MemberModel({
+let society = new societyModel({
 
-        "house": house,
-        "memberName": memberName,
-        "dateOfBirth": dateOfBirth,
-        "age": age,
-        "gender": gender,
-        "contactNo": contactNo,
+    
+    "societyName":societyName,
+    "address":address,
+    "city":city,
+    "pincode":pincode,
+    "noOfHouse":noOfHouse
 
+})
+
+let isError = false;
+let err = [];
+
+
+if (societyName == undefined || validator.isAlpha(societyName) == false || societyName.trim().length == 0){
+    isError = true;
+    err.push({
+        "societyName error":"Please enter societyName"
     })
-
-    let isError = false;
-    let err = [];
-
-    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
-        isError = true;
-        err.push({
-            "DateOfBirth Error": "Enter Valid Date"
-        })
-    }
-    if (age == undefined || validator.isNumeric(age.toString()) == false) {
-        isError = true;
-        err.push({
-            "Age Error": "Please Enter Valid Age"
-        })
-    }
-    if (gender == undefined || gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
-        isError = true;
-        err.push({
-            "Gender Error": "Please Enter Valid Gender"
-        })
-    }
-    if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
-        isError = true;
-        err.push({
-            "ContactNo Error": "Please Enter Valid ContactNo"
-        })
-    }
-    if (memberName == undefined || validator.isAlpha(memberName) == false || memberName.trim().length == 0) {
-        isError = true;
-        err.push({
-            "memberName error": "Please enter member name"
-        })
-    }
-
-    if (isError) {
-        res.json({
-            "status": -1,
-            "data": err,
-            "msg": "Something went Wrong..."
-        })
-    }
-    else {
-        member.save(function (err, data) {
-            if (err) {
-                console.log(err)
-                res.json({
-                    "status": -1,
-                    "data": err,
-                    "msg": "Something went Wrong..."
-                })
-            }
-            else {
-                res.json({
-                    "status": 200,
-                    "data": data,
-                    "msg": "Member Added!!"
-                })
-            }
-        })
-    }
+}
+if (address == undefined || validator.isAlpha(address) == false || address.trim().length == 0){
+    isError = true;
+    err.push({
+        "address error":"Please enter address"
+    })
+}
+if (city == undefined || validator.isAlpha(city) == false || city.trim().length == 0){
+    isError = true;
+    err.push({
+        "city error":"Please enter city"
+    })
+}
+if (pincode == undefined || validator.isNumeric(pincode.toString()) == false || pincode.length != 6) {
+    isError = true;
+    err.push({
+        "pincode Error": "Please Enter Valid pincode"
+    })
+}
+if (noOfHouse == undefined || validator.isNumeric(noOfHouse.toString()) == false || noOfHouse.length != 4) {
+    isError = true;
+    err.push({
+        "noOfHouse Error": "Please Enter Valid noOfHouse"
+    })
 }
 
+if (isError) {
+    res.json({
+        "status": -1,
+        "data": err,
+        "msg": "Something went Wrong..."
+    })
+}
+else {
+    society.save(function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "society Added!!"
+            })
+        }
+    })
+}
+}
+//addSociety
 
-//Update User
-module.exports.updateMember = function (req, res) {
-    let memberId = req.body.memberId
-    let dateOfBirth = req.body.dateOfBirth
-    let age = req.body.age
-    let gender = req.body.gender
-    let contactNo = req.body.contactNo
 
+
+
+//updateSociety
+module.exports.updateSociety = function (req, res) {
+    let societyId = req.body.societyId
+    let societyName = req.body.societyName
+    let address = req.body.address
+    let city = req.body.city
+    let noOfHouse = req.body.noOfHouse
+    let pincode = req.body.pincode
+    
     let isError = false;
     let err = [];
-    if (dateOfBirth != undefined) {
-        if (validator.isDate(dateOfBirth) == false) {
+
+    
+
+    if (societyName != undefined) {
+        if (validator.isAlpha(societyName) == false) {
             isError = true;
             err.push({
-                "DateOfBirth Error": "Enter Valid Date"
+                "ocietyName Error": "Enter Valid Name"
             })
         }
     }
 
-    if (age != undefined) {
-        if (validator.isNumeric(age.toString()) == false) {
+    if(noOfHouse != undefined)
+    {
+        if ( validator.isNumeric(noOfHouse.toString()) == false || noOfHouse.length == 0) {
             isError = true;
             err.push({
-                "Age Error": "Please Enter Valid Age"
+                "noOfHouse Error": "Please Enter Valid noOfHouse"
             })
         }
     }
 
-    if (gender != undefined) {
-        if (gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+    if (address != undefined) {
+        if (validator.isAlpha(address) == false) {
             isError = true;
             err.push({
-                "Gender Error": "Please Enter Valid Gender"
+                "Address Error": "Please Enter Valid Address"
             })
         }
     }
 
-    if (contactNo != undefined) {
-        if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+    if (city != undefined) {
+        if (validator.isAlpha(city) == false) {
             isError = true;
             err.push({
-                "ContactNo Error": "Please Enter Valid ContactNo"
+                "City Error": "Please Enter Valid City"
+            })
+        }
+    }
+
+    if (pincode != undefined) {
+        if (validator.isNumeric(pincode.toString()) == false || pincode.length != 6) {
+            isError = true;
+            err.push({
+                "pincode Error": "Please Enter Valid pincode"
             })
         }
     }
@@ -139,7 +157,7 @@ module.exports.updateMember = function (req, res) {
         })
     }
     else {
-        MemberModel.updateOne({ _id: memberId }, { "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo }, function (err, data) {
+        societyModel.updateOne({ _id: societyId }, { "societyName":societyName, "address": address, "city": city, "pincode": pincode,"noOfHouse":noOfHouse }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -152,18 +170,19 @@ module.exports.updateMember = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "User Information Updated!!"
+                    "msg": "society Information Updated!!"
                 })
             }
         })
     }
-}
+}//update
 
-//Delete User
-module.exports.deleteMember = function (req, res) {
-    let memberId = req.body.memberId
 
-    MemberModel.deleteOne({ _id: memberId }, function (err, data) {
+//deleteSociety
+module.exports.deleteSociety = function (req, res) {
+    let societyId = req.body.societyId
+
+    societyModel.deleteOne({ _id: societyId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -176,15 +195,17 @@ module.exports.deleteMember = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "User Information Deleted!!"
+                "msg": "Society Information Deleted!!"
             })
         }
     })
-}
+}//delete
 
-//List Mmebers
-module.exports.getAllMembers = function (req, res) {
-    MemberModel.find().populate("house").exec(function (err, data) {
+
+//list
+
+module.exports.getAllSociety = function (req, res) {
+    societyModel.find(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -197,7 +218,7 @@ module.exports.getAllMembers = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "Member Retrived!!"
+                "msg": "society Retrived!!"
             })
         }
     })

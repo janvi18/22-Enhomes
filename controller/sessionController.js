@@ -1,15 +1,12 @@
 const validator = require("validator")
-const sessionModel = require("../Model/sessionModel")
-const SessionModel = require('../Model/sessionModel')
-
-let users = []
+const sessionModel = require("../model/sessionModel")
 
 module.exports.signup = function (req, res) {
     let userName = req.body.userName
     let email = req.body.email
     let password = req.body.password
 
-    let information = new SessionModel({
+    let session = new sessionModel({
         "userName": userName,
         "email": email,
         "password": password
