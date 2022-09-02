@@ -3,9 +3,9 @@ const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     dateOfBirth: String,
-    age: Number,
+    age: String,
     gender: String,
-    contactNo: Number,
+    contactNo: String,
     email: String,
     password: String,
     role: {

@@ -94,16 +94,6 @@ module.exports.login = function (req, res) {
         })
     }
 
-    //authenticate
-    // for(i=0;i<users.length;i++){
-    //     if(users[i].Email==email && users[i].Password==password)
-    //     {
-    //         isCorrect=true
-    //         user=users[i]
-    //         break;
-    //     }
-    // }
-
 
     sessionModel.find({ $and: [{ "email": email }, { "password": password }] }, function (err, data) {
         if (err) {
