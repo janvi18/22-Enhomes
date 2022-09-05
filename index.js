@@ -26,7 +26,6 @@ app.use(express.urlencoded({ extended: true }))
 
 //Session Api
 app.get("/session", sessionController.getAllUsers)
-app.post("/signup", sessionController.signup)
 app.post("/login", sessionController.login)
 
 //User Api

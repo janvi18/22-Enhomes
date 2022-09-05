@@ -1,66 +1,5 @@
 const validator = require("validator")
-const sessionModel = require("../model/sessionModel")
-
-module.exports.signup = function (req, res) {
-    let userName = req.body.userName
-    let email = req.body.email
-    let password = req.body.password
-
-    let session = new sessionModel({
-        "userName": userName,
-        "email": email,
-        "password": password
-    })
-
-    //validaton
-    let isError = false
-    let errorMsg = []
-
-    if (userName == undefined || userName.trim().length == 0) {
-        isError = true
-        errorMsg.push({
-            "UsernameError": "Please Enter UserName"
-        })
-    }
-    if (email == undefined || email.trim().length == 0) {
-        isError = true
-        errorMsg.push({
-            "EmailError": "Please Enter Email"
-        })
-    }
-    if (password == undefined || password.trim().length == 0) {
-        isError = true
-        errorMsg.push({
-            "PasswordError": "Please Enter Password"
-        })
-    }
-    if (isError == true) {
-        res.json({
-            "status": -1,
-            "data": errorMsg,
-            "msg": "Please Solve Error"
-        })
-    }
-    else {
-
-        information.save(function (err, data) {
-            if (err) {
-                res.json({
-                    "status": -1,
-                    "data": err,
-                    "msg": "Something went Wrong.."
-                })
-            }
-            else {
-                res.json({
-                    "status": 200,
-                    "data": data,
-                    "msg": "SignUp Successfull!!"
-                })
-            }
-        })
-    }
-}
+const userModel = require("../model/userModel")
 
 module.exports.login = function (req, res) {
 
@@ -95,7 +34,7 @@ module.exports.login = function (req, res) {
     }
 
 
-    sessionModel.find({ $and: [{ "email": email }, { "password": password }] }, function (err, data) {
+    userModel.find({ $and: [{ "email": email }, { "password": password }] }, function (err, data) {
         if (err) {
             res.json({
                 "status": -1,
@@ -118,7 +57,7 @@ module.exports.login = function (req, res) {
 // error
 
 module.exports.getAllUsers = function (req, res) {
-    sessionModel.find(function (err, data) {
+    userModel.find(function (err, data) {
         if (err) {
             console.log(err)
             res.json({

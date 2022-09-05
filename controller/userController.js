@@ -27,6 +27,8 @@ module.exports.addUser = function (req, res) {
         "email": email
     })
 
+
+    
     let isError = false;
     let err = [];
 
