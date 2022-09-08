@@ -4,7 +4,7 @@ const maintenanceSchema = new mongoose.Schema({
     creationDate: String,
     month: String,
     maintenanceAmount: Number,
-    maintenancePaid: Boolean,
+    maintenancePaid: String,
     paymentDate: String,
     lastDate: String,
     penalty: Number,

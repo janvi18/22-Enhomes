@@ -1,13 +1,11 @@
 const mongoose = require("mongoose")
 
 const memberSchema = new mongoose.Schema({
-    memberid: String,
     memberName: String,
     dateOfBirth: String,
     age: Number,
     gender: String,
     contactNo: Number,
-
     house: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "House"

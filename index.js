@@ -17,7 +17,7 @@ const sessionController = require("./controller/sessionController")
 const complaintController = require("./controller/complaintController")
 const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
-const societyController = require("./controller/societyController")
+
 
 const app = express()
 
@@ -100,11 +100,7 @@ app.put("/member", memberController.updateMember)
 app.get("/member", memberController.getAllMembers)
 app.delete("/member", memberController.deleteMember)
 
-//society Api
-app.post("/society", societyController.addSociety)
-app.put("/society", societyController.updateSociety)
-app.get("/society", societyController.getAllSociety)
-app.delete("/society", societyController.deleteSociety)
+
 
 const localDb = "mongodb://localhost/e-society-22";
 const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";

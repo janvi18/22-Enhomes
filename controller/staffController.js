@@ -1,152 +1,120 @@
-const StaffModel=require("../model/staffModel")
-const validator=require("validator")
+const StaffModel = require("../model/staffModel")
+const validator = require("validator")
 
 //add Staff
-module.exports.addStaff=function(req,res){
-    let staffMemberName=req.body.staffMemberName
-    let type=req.body.type
-    let entryTime=req.body.entryTime
-    let exitTime=req.body.exitTime
-    let contactNo=req.body.contactNo
-    let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
-    let agencyName=req.body.agencyName
-    let agencyContactNumber=req.body.agencyContactNumber
+module.exports.addStaff = function (req, res) {
+    let staffMemberName = req.body.staffMemberName
+    let type = req.body.type
+    let entryTime = req.body.entryTime
+    let exitTime = req.body.exitTime
+    let contactNo = req.body.contactNo
+    let address = req.body.address
+    let isAllowed = req.body.isAllowed
+    let agencyName = req.body.agencyName
+    let agencyContactNumber = req.body.agencyContactNumber
 
-    let isError=false;
-    let err=[];
+    let isError = false;
+    let err = [];
 
 
-    let staff=new StaffModel({
-        "staffMemberName":staffMemberName,
-        "type":type,
-        "entryTime":entryTime,
-        "exitTime":exitTime,
-        "contactNo":contactNo,
-        "address":address,
-        "email":email,
-        "password":password,
-        "isAllowed":isAllowed,
-        "agencyName":agencyName,
-        "agencyContactNumber":agencyContactNumber
+    let staff = new StaffModel({
+        "staffMemberName": staffMemberName,
+        "type": type,
+        "entryTime": entryTime,
+        "exitTime": exitTime,
+        "contactNo": contactNo,
+        "address": address,
+        "isAllowed": isAllowed,
+        "agencyName": agencyName,
+        "agencyContactNumber": agencyContactNumber
     })
 
 
-    if(staffMemberName==undefined || validator.isAlpha(staffMemberName)==false || staffMemberName.trim().length==0)
-    {
-        isError=true;
+    if (staffMemberName == undefined || validator.isAlpha(staffMemberName) == false || staffMemberName.trim().length == 0) {
+        isError = true;
         err.push({
-            "staffMemberName Error":"Please Enter Valid Name"
+            "staffMemberName Error": "Please Enter Valid Name"
         })
     }
-    if(type==undefined||  validator.isAlpha(type)==false || type.trim().length==0)
-    {
-        isError=true;
+    if (type == undefined || validator.isAlpha(type) == false || type.trim().length == 0) {
+        isError = true;
         err.push({
-            "Type Error":"Please Enter Valid Type"
+            "Type Error": "Please Enter Valid Type"
         })
     }
-    if(entryTime==undefined || validator.isNumeric(entryTime.toString())==false)
-    {
-        isError=true;
+    if (entryTime == undefined || validator.isNumeric(entryTime.toString()) == false) {
+        isError = true;
         err.push({
-            "EntryTime Error":"Please Enter Valid Time"
+            "EntryTime Error": "Please Enter Valid Time"
         })
     }
-    if(exitTime==undefined || validator.isNumeric(exitTime.toString())==false)
-    {
-        isError=true;
+    if (exitTime == undefined || validator.isNumeric(exitTime.toString()) == false) {
+        isError = true;
         err.push({
-            "ExitTime Error":"Please Enter Valid Time"
+            "ExitTime Error": "Please Enter Valid Time"
         })
     }
-    let contact=contactNo.length
-    if(contactNo==undefined || validator.isNumeric(contactNo.toString())==false || contact != 10 )
-    {
+    let contact = contactNo.length
+    if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contact != 10) {
         console.log(contact);
-        isError=true;
+        isError = true;
         err.push({
-            "ContactNo Error":"Please Enter Valid ContactNo"
+            "ContactNo Error": "Please Enter Valid ContactNo"
         })
     }
-    if(address==undefined || validator.isAlpha(address)==false || address.trim().length==0)
-    {
-        isError=true;
+    if (address == undefined || validator.isAlpha(address) == false || address.trim().length == 0) {
+        isError = true;
         err.push({
-            "Address Error":"Please Enter Valid Address"
+            "Address Error": "Please Enter Valid Address"
         })
     }
-    if(email==undefined || validator.isEmail(email)==false)
-    {
-        isError=true;
+    if (isAllowed == undefined) {
+        isError = true;
         err.push({
-            "Email Error":"Please Enter Valid Email"
+            "isAllowed Error": "Please Enter Valid Information"
         })
     }
-    if(password==undefined || validator.isAlpha(password)==false || password.trim().length==0)
-    {
-        isError=true;
+    if (isAllowed != "false" && isAllowed != "true") {
+        isError = true;
         err.push({
-            "Password Error":"Please Enter Valid Password"
+            "isAllowed Error": "Please Enter Valid Information"
         })
     }
-    if(isAllowed==undefined)
-    {
-        isError=true;
+    if (agencyName == undefined || validator.isAlpha(agencyName) == false || agencyName.trim().length == 0) {
+        isError = true;
         err.push({
-            "isAllowed Error":"Please Enter Valid Information"
-        }) 
-    }
-    if(isAllowed != "false" && isAllowed != "true")
-    {
-        isError=true;
-        err.push({
-            "isAllowed Error":"Please Enter Valid Information"
-        }) 
-    }
-    if(agencyName==undefined || validator.isAlpha(agencyName)==false || agencyName.trim().length==0)
-    {
-        isError=true;
-        err.push({
-            "AgencyName Error":"Please Enter Valid Name"
+            "AgencyName Error": "Please Enter Valid Name"
         })
     }
-    if(agencyContactNumber==undefined || validator.isNumeric(agencyContactNumber.toString())==false || agencyContactNumber.length != 10)
-    {
-        isError=true;
+    if (agencyContactNumber == undefined || validator.isNumeric(agencyContactNumber.toString()) == false || agencyContactNumber.length != 10) {
+        isError = true;
         err.push({
-            "Agency ContactNo Error":"Please Enter Valid ContactNo"
+            "Agency ContactNo Error": "Please Enter Valid ContactNo"
         })
     }
 
-    if(isError)
-    {
+    if (isError) {
         res.json({
-            "status":-1,
-            "data":err,
-            "msg":"Something went Wrong..."
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong..."
         })
     }
-    else
-    {
-        staff.save(function(err,data){
-            if(err)
-            {
+    else {
+        staff.save(function (err, data) {
+            if (err) {
                 console.log(err)
                 res.json({
-                    "status":-1,
-                    "data":err,
-                    "msg":"Something went Wrong..!!"
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong..!!"
                 })
             }
-            else
-            {
+            else {
                 res.json({
-                    "status":200,
-                    "data":data,
-                    "msg":"Staff Member Added!!"
+                    "status": 200,
+                    "data": data,
+                    "msg": "Staff Member Added!!"
                 })
             }
         })
@@ -156,173 +124,128 @@ module.exports.addStaff=function(req,res){
 
 
 //update Staff
-module.exports.updateStaff=function(req,res){
-    let staffId=req.body.staffId
-    let staffMemberName=req.body.staffMemberName
-    let type=req.body.type
-    let entryTime=req.body.entryTime
-    let exitTime=req.body.exitTime
-    let contactNo=req.body.contactNo
-    let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
-    let agencyName=req.body.agencyName
-    let agencyContactNumber=req.body.agencyContactNumber
+module.exports.updateStaff = function (req, res) {
+    let staffId = req.body.staffId
+    let staffMemberName = req.body.staffMemberName
+    let type = req.body.type
+    let entryTime = req.body.entryTime
+    let exitTime = req.body.exitTime
+    let contactNo = req.body.contactNo
+    let address = req.body.address
+    let isAllowed = req.body.isAllowed
+    let agencyName = req.body.agencyName
+    let agencyContactNumber = req.body.agencyContactNumber
 
-    let isError=false;
-    let err=[];
+    let isError = false;
+    let err = [];
 
-    if(staffMemberName != undefined)
-    {
-        if(validator.isAlpha(staffMemberName)==false || staffMemberName.trim().length==0)
-        {
-            isError=true;
+    if (staffMemberName != undefined) {
+        if (validator.isAlpha(staffMemberName) == false || staffMemberName.trim().length == 0) {
+            isError = true;
             err.push({
-                "staffMemberName Error":"Please Enter Valid Name"
+                "staffMemberName Error": "Please Enter Valid Name"
             })
         }
     }
 
-    if(type != undefined)
-    {
-        if(validator.isAlpha(type)==false || type.trim().length==0)
-        {
-            isError=true;
+    if (type != undefined) {
+        if (validator.isAlpha(type) == false || type.trim().length == 0) {
+            isError = true;
             err.push({
-                "Type Error":"Please Enter Valid Type"
+                "Type Error": "Please Enter Valid Type"
             })
         }
     }
 
-    if(entryTime != undefined)
-    {
-        if(validator.isNumeric(entryTime.toString())==false)
-        {
-            isError=true;
+    if (entryTime != undefined) {
+        if (validator.isNumeric(entryTime.toString()) == false) {
+            isError = true;
             err.push({
-                "EntryTime Error":"Please Enter Valid Time"
+                "EntryTime Error": "Please Enter Valid Time"
             })
         }
     }
 
-    if(exitTime != undefined)
-    {
-        if(validator.isNumeric(exitTime.toString())==false)
-        {
-            isError=true;
+    if (exitTime != undefined) {
+        if (validator.isNumeric(exitTime.toString()) == false) {
+            isError = true;
             err.push({
-                "ExitTime Error":"Please Enter Valid Time"
+                "ExitTime Error": "Please Enter Valid Time"
             })
         }
     }
 
-    if(contactNo != undefined)
-    {
-        if(validator.isNumeric(contactNo.toString())==false || contactNo.length != 10)
-        {
-            isError=true;
+    if (contactNo != undefined) {
+        if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+            isError = true;
             err.push({
-                "ContactNo Error":"Please Enter Valid ContactNo"
-            })
-        }
-    }
-    
-    if(address != undefined)
-    {
-        if(validator.isAlpha(address)==false || address.trim().length==0)
-        {
-            isError=true;
-            err.push({
-                "Address Error":"Please Enter Valid Address"
-            })
-        }
-    }
-    
-    if(email != undefined)
-    {
-        if(validator.isEmail(email)==false)
-        {
-            isError=true;
-            err.push({
-                "Email Error":"Please Enter Valid Email"
+                "ContactNo Error": "Please Enter Valid ContactNo"
             })
         }
     }
 
-    if(password != undefined)
-    {
-        if(validator.isAlpha(password)==false || password.trim().length==0)
-        {
-            isError=true;
+    if (address != undefined) {
+        if (validator.isAlpha(address) == false || address.trim().length == 0) {
+            isError = true;
             err.push({
-                "Password Error":"Please Enter Valid Password"
+                "Address Error": "Please Enter Valid Address"
             })
         }
     }
 
-    if(isAllowed != undefined)
-    {
-        if(isAllowed != "false" && isAllowed != "true")
-        {
-            isError=true;
+    if (isAllowed != undefined) {
+        if (isAllowed != "false" && isAllowed != "true") {
+            isError = true;
             err.push({
-                "isAllowed Error":"Please Enter Valid Information"
-            }) 
-        }
-    }
-
-    if(agencyName != undefined)
-    {
-        if(validator.isAlpha(agencyName)==false || agencyName.trim().length==0)
-        {
-            isError=true;
-            err.push({
-                "AgencyName Error":"Please Enter Valid AgencyName"
+                "isAllowed Error": "Please Enter Valid Information"
             })
         }
     }
 
-    if(agencyContactNumber != undefined)
-    {
-        if(validator.isNumeric(agencyContactNumber.toString())==false || agencyContactNumber.length != 10)
-        {
-            isError=true;
+    if (agencyName != undefined) {
+        if (validator.isAlpha(agencyName) == false || agencyName.trim().length == 0) {
+            isError = true;
             err.push({
-                "Agency ContactNo Error":"Please Enter Valid Agency ContactNo"
+                "AgencyName Error": "Please Enter Valid AgencyName"
             })
         }
     }
 
-    if(isError)
-    {
+    if (agencyContactNumber != undefined) {
+        if (validator.isNumeric(agencyContactNumber.toString()) == false || agencyContactNumber.length != 10) {
+            isError = true;
+            err.push({
+                "Agency ContactNo Error": "Please Enter Valid Agency ContactNo"
+            })
+        }
+    }
+
+    if (isError) {
         console.log(err)
         res.json({
-            "status":-1,
-            "data":err,
-            "msg":"Something went Wrong..."
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong..."
         })
     }
-    else
-    {
-        StaffModel.updateOne({_id:staffId},{staffMemberName:staffMemberName, type:type,entryTime:entryTime, exitTime:exitTime,
-            contactNo:contactNo,address:address, email:email, password:password, isAllowed:isAllowed, agencyName:agencyName, agencyContactNumber:agencyContactNumber 
-        },function(err,data){
-            if(err)
-            {
+    else {
+        StaffModel.updateOne({ _id: staffId }, {
+            staffMemberName: staffMemberName, type: type, entryTime: entryTime, exitTime: exitTime,
+            contactNo: contactNo, address: address, isAllowed: isAllowed, agencyName: agencyName, agencyContactNumber: agencyContactNumber
+        }, function (err, data) {
+            if (err) {
                 console.log(err)
                 res.json({
-                    "status":-1,
-                    "data":err,
-                    "msg":"Something went Wrong..."
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong..."
                 })
             }
-            else
-            {
+            else {
                 res.json({
-                    "status":200,
-                    "data":data,
-                    "msg":"Staff Member Updated!!"
+                    "status": 200,
+                    "data": data,
+                    "msg": "Staff Member Updated!!"
                 })
             }
         })
@@ -332,25 +255,23 @@ module.exports.updateStaff=function(req,res){
 
 
 //Delete Staff
-module.exports.deleteStaff=function(req,res){
-    let staffId=req.body.staffId
+module.exports.deleteStaff = function (req, res) {
+    let staffId = req.body.staffId
 
-    StaffModel.deleteOne({_id:staffId},function(err,data){
-        if(err)
-        {
+    StaffModel.deleteOne({ _id: staffId }, function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Member Deleted!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Member Deleted!!"
             })
         }
     })
@@ -359,23 +280,21 @@ module.exports.deleteStaff=function(req,res){
 
 
 //List Staff
-module.exports.getAllStaff=function(req,res){
-    StaffModel.find(function(err,data){
-        if(err)
-        {
+module.exports.getAllStaff = function (req, res) {
+    StaffModel.find(function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Members Retrived!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Members Retrived!!"
             })
         }
     })
