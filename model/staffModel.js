@@ -6,7 +6,6 @@ const staffSchema = new mongoose.Schema({
     exitTime: String,
     contactNo: Number,
     address: String,
-    isAllowed: String,
     agencyName: String,
     agencyContactNumber: Number
 })

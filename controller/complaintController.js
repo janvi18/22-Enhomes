@@ -7,7 +7,6 @@ module.exports.addcomplaint = function (req, res) {
     let house = req.body.house
     let date = req.body.date
     let complaint = req.body.complaint
-    let isResolved = req.body.isResolved
 
     console.log(req.body)
 
@@ -17,7 +16,6 @@ module.exports.addcomplaint = function (req, res) {
         "house": house,
         "date": date,
         "complaint": complaint,
-        "isResolved": isResolved
     })
 
     let isError = false;
@@ -35,12 +33,7 @@ module.exports.addcomplaint = function (req, res) {
             "complaint Error": "Please Enter Valid complaint"
         })
     }
-    if (isResolved == undefined || validator.isAlpha(isResolved) == false || isResolved.trim().length == 0) {
-        isError = true;
-        err.push({
-            "Status Error": "Please Enter Valid Status"
-        })
-    }
+   
 
     if (isError) {
         console.log(err)
@@ -99,7 +92,6 @@ module.exports.updatecomplaint = function (req, res) {
     let complaintId = req.body.complaintId
     let date = req.body.date
     let complaint = req.body.complaint
-    let isResolved = req.body.isResolved
 
 
     let isError = false;
@@ -133,14 +125,7 @@ module.exports.updatecomplaint = function (req, res) {
         }
     }
 
-    if (isResolved != undefined) {
-        if (isResolved == undefined || validator.isAlpha(isResolved) == false || isResolved.trim().length == 0) {
-            isError = true;
-            err.push({
-                "Status Error": "Please Enter Valid Status"
-            })
-        }
-    }
+
 
 
     if (isError) {
@@ -152,7 +137,7 @@ module.exports.updatecomplaint = function (req, res) {
         })
     }
     else {
-        complaintModel.updateOne({ _id: complaintId }, { date: date, complaint: complaint, isResolved: isResolved }, function (err, data) {
+        complaintModel.updateOne({ _id: complaintId }, { date: date, complaint: complaint }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

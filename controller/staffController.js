@@ -9,7 +9,6 @@ module.exports.addStaff = function (req, res) {
     let exitTime = req.body.exitTime
     let contactNo = req.body.contactNo
     let address = req.body.address
-    let isAllowed = req.body.isAllowed
     let agencyName = req.body.agencyName
     let agencyContactNumber = req.body.agencyContactNumber
 
@@ -24,7 +23,6 @@ module.exports.addStaff = function (req, res) {
         "exitTime": exitTime,
         "contactNo": contactNo,
         "address": address,
-        "isAllowed": isAllowed,
         "agencyName": agencyName,
         "agencyContactNumber": agencyContactNumber
     })
@@ -68,18 +66,7 @@ module.exports.addStaff = function (req, res) {
             "Address Error": "Please Enter Valid Address"
         })
     }
-    if (isAllowed == undefined) {
-        isError = true;
-        err.push({
-            "isAllowed Error": "Please Enter Valid Information"
-        })
-    }
-    if (isAllowed != "false" && isAllowed != "true") {
-        isError = true;
-        err.push({
-            "isAllowed Error": "Please Enter Valid Information"
-        })
-    }
+
     if (agencyName == undefined || validator.isAlpha(agencyName) == false || agencyName.trim().length == 0) {
         isError = true;
         err.push({
@@ -132,7 +119,6 @@ module.exports.updateStaff = function (req, res) {
     let exitTime = req.body.exitTime
     let contactNo = req.body.contactNo
     let address = req.body.address
-    let isAllowed = req.body.isAllowed
     let agencyName = req.body.agencyName
     let agencyContactNumber = req.body.agencyContactNumber
 
@@ -193,14 +179,7 @@ module.exports.updateStaff = function (req, res) {
         }
     }
 
-    if (isAllowed != undefined) {
-        if (isAllowed != "false" && isAllowed != "true") {
-            isError = true;
-            err.push({
-                "isAllowed Error": "Please Enter Valid Information"
-            })
-        }
-    }
+
 
     if (agencyName != undefined) {
         if (validator.isAlpha(agencyName) == false || agencyName.trim().length == 0) {
@@ -231,7 +210,7 @@ module.exports.updateStaff = function (req, res) {
     else {
         StaffModel.updateOne({ _id: staffId }, {
             staffMemberName: staffMemberName, type: type, entryTime: entryTime, exitTime: exitTime,
-            contactNo: contactNo, address: address, isAllowed: isAllowed, agencyName: agencyName, agencyContactNumber: agencyContactNumber
+            contactNo: contactNo, address: address, agencyName: agencyName, agencyContactNumber: agencyContactNumber
         }, function (err, data) {
             if (err) {
                 console.log(err)

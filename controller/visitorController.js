@@ -7,14 +7,12 @@ module.exports.addvisitor = function (req, res) {
     let house = req.body.house
     let visitorName = req.body.visitorName
     let arrivingTime = req.body.arrivingTime
-    let isAllowed = req.body.isAllowed
 
     let visitor = new visitorModel({
         "user": user,
         "house": house,
         "visitorName": visitorName,
         "arrivingTime": arrivingTime,
-        "isAllowed": isAllowed
     })
 
     let isError = false;
@@ -32,19 +30,7 @@ module.exports.addvisitor = function (req, res) {
             "ArrivingTime Error": "Please Enter Valid Time"
         })
     }
-    if (isAllowed == undefined) {
-        isError = true;
-        err.push({
-            "isAllowed Error": "Please Enter Valid Information"
-        })
-    }
-    let allowed = isAllowed.toLowerCase();
-    if (allowed != "false" && allowed != "true") {
-        isError = true;
-        err.push({
-            "isAllowed Error": "Please Enter Valid Information"
-        })
-    }
+
 
 
     if (isError) {
@@ -104,7 +90,6 @@ module.exports.updatevisitor = function (req, res) {
     let visitorId = req.body.visitorId
     let visitorName = req.body.visitorName
     let arrivingTime = req.body.arrivingTime
-    let isAllowed = req.body.isAllowed
 
 
     let isError = false;
@@ -129,15 +114,7 @@ module.exports.updatevisitor = function (req, res) {
         }
     }
 
-    if (isAllowed != undefined) {
-        let allowed = isAllowed.toLowerCase();
-        if (allowed != "false" && allowed != "true") {
-            isError = true;
-            err.push({
-                "isAllowed Error": "Please Enter Valid Information"
-            })
-        }
-    }
+
 
 
 
@@ -150,7 +127,7 @@ module.exports.updatevisitor = function (req, res) {
         })
     }
     else {
-        visitorModel.updateOne({ _id: visitorId }, { visitorName: visitorName, arrivingTime: arrivingTime, isAllowed: isAllowed }, function (err, data) {
+        visitorModel.updateOne({ _id: visitorId }, { visitorName: visitorName, arrivingTime: arrivingTime }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
