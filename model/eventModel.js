@@ -4,7 +4,7 @@ const eventSchema = new mongoose.Schema({
     eventDate: String,
     eventEndDate: String,
     eventDetails: String,
-    rent: Number,
+    rent: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
