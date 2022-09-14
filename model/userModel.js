@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     house: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "House"
-    }
+    },
+    otp:Number
 
 })
 module.exports = mongoose.model("User", userSchema)

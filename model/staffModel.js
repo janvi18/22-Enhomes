@@ -4,10 +4,10 @@ const staffSchema = new mongoose.Schema({
     type: String,
     entryTime: String,
     exitTime: String,
-    contactNo: Number,
+    contactNo: String,
     address: String,
     agencyName: String,
-    agencyContactNumber: Number
+    agencyContactNumber: String
 })
 
 module.exports = mongoose.model('Staff', staffSchema)

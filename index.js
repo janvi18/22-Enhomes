@@ -33,6 +33,8 @@ app.get("/user", userController.getAllUsers)
 app.post("/user", userController.addUser)
 app.put("/user", userController.updateUser)
 app.delete("/user", userController.deleteUser)
+app.post("/forgetPassword",userController.forgetPassword)
+app.post("/updatepassword",userController.updatePassword)
 
 //Suggestion Api
 app.get("/suggestion", suggestionController.getAllSuggestions)
@@ -103,9 +105,9 @@ app.delete("/member", memberController.deleteMember)
 
 
 const localDb = "mongodb://localhost/e-society-22";
-const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
+//const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
 
-mongoose.connect(liveDb, function (err) {
+mongoose.connect(localDb, function (err) {
     if (err) {
         console.log(err)
         console.log("Something Went Wrong....")
