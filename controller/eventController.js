@@ -10,7 +10,6 @@ module.exports.addEvent = function (req, res) {
     let eventEndDate = req.body.eventEndDate
     let eventDetails = req.body.eventDetails
     let rent = req.body.rent
-    let isAvailable = req.body.isAvailable
 
     let event = new eventModel({
         "user": user,
@@ -20,7 +19,6 @@ module.exports.addEvent = function (req, res) {
         "eventEndDate": eventEndDate,
         "eventDetails": eventDetails,
         "rent": rent,
-        "isAvailable": isAvailable,
     })
 
     let isError = false;
@@ -38,12 +36,7 @@ module.exports.addEvent = function (req, res) {
             "eventEndDate Error": "Please Enter Valid Date"
         })
     }
-    if (isAvailable == undefined || validator.isAlpha(isAvailable) == false || isAvailable.trim().length == 0) {
-        isError = true;
-        err.push({
-            "Status Error": "Please Enter Valid Status"
-        })
-    }
+
     if (eventDetails == undefined || validator.isAlpha(eventDetails) == false || eventDetails.trim().length == 0) {
         isError = true;
         err.push({
@@ -115,7 +108,6 @@ module.exports.updateEvent = function (req, res) {
     let eventEndDate = req.body.eventEndDate
     let eventDetails = req.body.eventDetails
     let rent = req.body.rent
-    let isAvailable = req.body.isAvailable
 
     let isError = false;
     let err = [];
@@ -153,14 +145,7 @@ module.exports.updateEvent = function (req, res) {
         }
     }
 
-    if (isAvailable != undefined) {
-        if (isAvailable == undefined || validator.isAlpha(isAvailable) == false || isAvailable.trim().length == 0) {
-            isError = true;
-            err.push({
-                "Status Error": "Please Enter Valid Status"
-            })
-        }
-    }
+
 
     if (isError) {
         console.log(err)
@@ -171,7 +156,8 @@ module.exports.updateEvent = function (req, res) {
         })
     }
     else {
-        eventModel.updateOne({ _id: eventId }, { eventDate: eventDate, eventEndDate: eventEndDate, eventDetails: eventDetails, rent: rent, isAvailable: isAvailable }, function (err, data) {
+
+        eventModel.updateOne({ _id: eventId }, { eventDate: eventDate, eventEndDate: eventEndDate, eventDetails: eventDetails, rent: rent }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

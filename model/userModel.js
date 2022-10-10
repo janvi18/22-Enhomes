@@ -3,9 +3,9 @@ const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     dateOfBirth: String,
-    age: Number,
+    age: String,
     gender: String,
-    contactNo: Number,
+    contactNo: String,
     email: String,
     password: String,
     role: {
@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     house: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "House"
-    }
+    },
+    otp:Number
 
 })
 module.exports = mongoose.model("User", userSchema)

@@ -2,7 +2,6 @@ const mongoose = require("mongoose")
 
 const deliverySchema = new mongoose.Schema({
     couriertype: String,
-    isAllowed: Boolean,
     status: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,

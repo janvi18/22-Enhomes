@@ -11,7 +11,7 @@ module.exports.addRole = function (req, res) {
     let isError = false
     let err = []
 
-    if (roleName==undefined || validator.isAlpha(roleName) == false || roleName.trim().length == 0) {
+    if (roleName == undefined || validator.isAlpha(roleName) == false || roleName.trim().length == 0) {
         isError = true;
         err.push({
             "RoleName Error": "Please Enter Valid Name"
@@ -28,9 +28,8 @@ module.exports.addRole = function (req, res) {
         })
     }
     else {
-        role.save(function(err,data){
-            if(err)
-            {
+        role.save(function (err, data) {
+            if (err) {
                 console.log(err)
                 res.json({
                     "status": -1,
@@ -38,8 +37,7 @@ module.exports.addRole = function (req, res) {
                     "msg": "Something went Wrong..."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,
@@ -82,10 +80,8 @@ module.exports.updateRole = function (req, res) {
     let isError = false
     let err = []
 
-    if(roleName != undefined)
-    {
-        if (validator.isAlpha(roleName) == false || roleName.trim().length == 0)
-        {
+    if (roleName != undefined) {
+        if (validator.isAlpha(roleName) == false || roleName.trim().length == 0) {
             isError = true;
             err.push({
                 "RoleName Error": "Please Enter Valid Name"
@@ -102,17 +98,15 @@ module.exports.updateRole = function (req, res) {
         })
     }
     else {
-        RoleModel.updateOne({ _id: roleId }, { roleName: req.body.roleName },function(err,data){
-            if(err)
-            {
+        RoleModel.updateOne({ _id: roleId }, { roleName: req.body.roleName }, function (err, data) {
+            if (err) {
                 res.json({
                     "status": -1,
                     "data": err,
                     "msg": "Something went Wrong...."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,

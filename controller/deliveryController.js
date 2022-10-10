@@ -7,7 +7,6 @@ module.exports.adddelivery = function (req, res) {
     let user = req.body.user
     let house = req.body.house
     let couriertype = req.body.couriertype
-    let isAllowed = req.body.isAllowed
     let status = req.body.status
 
 
@@ -16,7 +15,6 @@ module.exports.adddelivery = function (req, res) {
         "user":user,
         "house":house,
         "couriertype": couriertype,
-        "isAllowed": isAllowed,
         "status": status
     })
 
@@ -30,20 +28,7 @@ module.exports.adddelivery = function (req, res) {
             "Couriertype Error":"Please Enter Valid Type"
         })
     }
-    if(isAllowed==undefined)
-    {
-        isError=true;
-        err.push({
-            "isAllowed Error":"Please Enter Valid Information"
-        }) 
-    }
-    if(isAllowed != "false" && isAllowed != "true")
-    {
-        isError=true;
-        err.push({
-            "isAllowed Error":"Please Enter Valid Information"
-        }) 
-    }
+   
     if(status==undefined || validator.isAlpha(status)==false || status.trim().length==0)
     {
         isError=true;
@@ -111,7 +96,6 @@ module.exports.updatedelivery = function (req, res) {
     
     let deliveryId = req.body.deliveryId
     let couriertype = req.body.couriertype
-    let isAllowed = req.body.isAllowed
     let status = req.body.status
 
     let isError=false;
@@ -129,16 +113,7 @@ module.exports.updatedelivery = function (req, res) {
         }
     }
 
-    if(isAllowed != undefined)
-    {
-        if(isAllowed != "false" && isAllowed != "true")
-        {
-            isError=true;
-            err.push({
-                "isAllowed Error":"Please Enter Valid Information"
-            }) 
-        }
-    }
+   
 
     if(status != undefined)
     {
@@ -163,7 +138,7 @@ module.exports.updatedelivery = function (req, res) {
     }
     else
     {
-        deliveryModel.updateOne({ _id: deliveryId }, { couriertype: couriertype,isAllowed: isAllowed,status: status}, function (err, data) {
+        deliveryModel.updateOne({ _id: deliveryId }, { couriertype: couriertype,status: status}, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

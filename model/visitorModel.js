@@ -3,7 +3,6 @@ const mongoose = require("mongoose")
 const visitorSchema = new mongoose.Schema({
     visitorName: String,
     arrivingTime: String,
-    isAllowed: Boolean,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"

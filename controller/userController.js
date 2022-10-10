@@ -1,5 +1,85 @@
 const UserModel = require("../model/userModel")
 const validator = require("validator")
+const userModel = require("../model/userModel")
+
+
+//forget password
+module.exports.forgetPassword = function (req, res) {
+    let email = req.body.email
+
+    userModel.findOne({
+        "email": email
+    }, function (err, data) {
+        if (err) {
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
+            })
+        }
+        else {
+
+            console.log(data);
+            if(data ){ 
+                    //otp generate
+                    let otp = parseInt((Math.random() * 100000)); 
+                    //mail send 
+                    userModel.updateOne({"email":email},{"otp":otp},function(err,data){
+                        console.log("update one ");
+                        console.log(err);
+                        console.log(data);
+                    })    
+                res.json({
+                    "status": 200,
+                    "data": email,
+                    "msg": "OTP successfully send to your email!!"
+                })
+            }else{
+                res.json({
+                    "status": -1,
+                    "data": email,
+                    "msg": "Invalid  email!!"
+                })
+            }
+        }
+    })
+}
+
+
+//update password 
+
+module.exports.updatePassword = function(req,res){
+
+    let email = req.body.email;
+    let password = req.body.password;
+    let otp = req.body.otp ; 
+
+
+    userModel.findOne({"email":email},function(err,data){
+        if(data){
+            if(data.otp == otp ){
+                userModel.updateOne({"email":email},{"password":password},function(err,data){
+                    console.log("Password modified...");
+                    res.json({
+                        status:200,
+                        data:email,
+                        msg:"password modifed..."
+                    })
+                })
+            }else{
+                res.json({
+                    status:-1,
+                    data:req.body,
+                    msg:"Invalid otp"
+                })
+            }
+        }
+    })
+
+
+}
+
+
 
 //add User
 module.exports.addUser = function (req, res) {
@@ -26,6 +106,8 @@ module.exports.addUser = function (req, res) {
         "contactNo": contactNo,
         "email": email
     })
+
+
 
     let isError = false;
     let err = [];

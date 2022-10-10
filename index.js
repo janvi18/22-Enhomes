@@ -13,11 +13,11 @@ const houseController = require("./controller/houseController")
 const visitorController = require("./controller/visitorController")
 const deliveryController = require("./controller/deliveryController")
 const placeController = require("./controller/placeController")
-const sessionController = require("./Controller/sessionController")
+const sessionController = require("./controller/sessionController")
 const complaintController = require("./controller/complaintController")
 const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
-const societyController = require("./controller/societyController")
+
 
 const app = express()
 
@@ -26,7 +26,6 @@ app.use(express.urlencoded({ extended: true }))
 
 //Session Api
 app.get("/session", sessionController.getAllUsers)
-app.post("/signup", sessionController.signup)
 app.post("/login", sessionController.login)
 
 //User Api
@@ -34,6 +33,8 @@ app.get("/user", userController.getAllUsers)
 app.post("/user", userController.addUser)
 app.put("/user", userController.updateUser)
 app.delete("/user", userController.deleteUser)
+app.post("/forgetPassword",userController.forgetPassword)
+app.post("/updatepassword",userController.updatePassword)
 
 //Suggestion Api
 app.get("/suggestion", suggestionController.getAllSuggestions)
@@ -101,16 +102,12 @@ app.put("/member", memberController.updateMember)
 app.get("/member", memberController.getAllMembers)
 app.delete("/member", memberController.deleteMember)
 
-//society Api
-app.post("/society", societyController.addSociety)
-app.put("/society", societyController.updateSociety)
-app.get("/society", societyController.getAllSociety)
-app.delete("/society", societyController.deleteSociety)
+
 
 const localDb = "mongodb://localhost/e-society-22";
-const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
+//const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
 
-mongoose.connect(liveDb, function (err) {
+mongoose.connect(localDb, function (err) {
     if (err) {
         console.log(err)
         console.log("Something Went Wrong....")
@@ -127,7 +124,7 @@ app.listen(PORT, function (err) {
         console.log("Something Went Wrong....")
     }
     else {
-        console.log("Server Started 9999")
+        console.log("Server Started 3000")
     }
 })
 
