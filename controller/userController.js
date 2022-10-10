@@ -2,6 +2,8 @@ const UserModel = require("../model/userModel")
 const validator = require("validator")
 const userModel = require("../model/userModel")
 
+
+//forget password
 module.exports.forgetPassword = function (req, res) {
     let email = req.body.email
 
