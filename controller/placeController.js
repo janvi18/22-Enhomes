@@ -1,4 +1,4 @@
-const PlaceModel=require("../model/placeModel")
+const placeModel=require("../model/placeModel")
 const validator=require("validator")
 
 
@@ -6,7 +6,7 @@ const validator=require("validator")
 module.exports.addPlace= function(req,res)
 {
     let placeName=req.body.placeName
-    let place = new PlaceModel({
+    let place = new placeModel({
         "placeName": placeName
     })
 
@@ -55,7 +55,7 @@ module.exports.addPlace= function(req,res)
 
 //getAllPlaces
 module.exports.getAllPlaces = function (req, res) {
-    PlaceModel.find(function (err, data) {
+    placeModel.find(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -104,7 +104,7 @@ module.exports.updatePlace = function (req, res) {
         })
     }
     else {
-        PlaceModel.updateOne({ _id: placeId }, { placeName: req.body.placeName },function(err,data){
+        placeModel.updateOne({ _id: placeId }, { placeName: req.body.placeName },function(err,data){
             if(err)
             {
                 res.json({
@@ -131,7 +131,7 @@ module.exports.updatePlace = function (req, res) {
 //deletePlace
 module.exports.deletePlace = function (req, res) {
     let placeId = req.body.placeId
-    PlaceModel.deleteOne({ _id: placeId }, function (err, data) {
+    placeModel.deleteOne({ _id: placeId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
