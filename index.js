@@ -105,9 +105,9 @@ app.delete("/member", memberController.deleteMember)
 
 
 const localDb = "mongodb://localhost/e-society-22";
-//const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
+const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";
 
-mongoose.connect(localDb, function (err) {
+mongoose.connect(liveDb, function (err) {
     if (err) {
         console.log(err)
         console.log("Something Went Wrong....")
