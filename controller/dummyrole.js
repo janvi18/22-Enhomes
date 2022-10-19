@@ -125,7 +125,7 @@ module.exports = function (app) {
 
     //deleteRole
     module.exports.deleteRole = function (req, res) {
-        let roleId = req.body.roleId
+        let roleId = req.params.roleId
         RoleModel.deleteOne({ _id: roleId }, function (err, data) {
             if (err) {
                 console.log(err)

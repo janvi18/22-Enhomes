@@ -162,7 +162,7 @@ module.exports.updatedelivery = function (req, res) {
 
 //deletedelivery
 module.exports.deletedelivery = function (req, res) {
-    let deliveryId = req.body.deliveryId
+    let deliveryId = req.params.deliveryId
     deliveryModel.deleteOne({ _id: deliveryId }, function (err, data) {
         if (err) {
             console.log(err)

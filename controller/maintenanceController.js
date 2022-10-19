@@ -227,8 +227,8 @@ module.exports.updateMaintenance = function (req, res) {
 
 //Delete Maintenance
 module.exports.deleteMaintenance = function (req, res) {
-    let maintenanceId = req.body.maintenanceId
-
+    let maintenanceId = req.params.maintenanceId
+    console.log(maintenanceId)
     MaintenanceModel.deleteOne({ _id: maintenanceId }, function (err, data) {
         if (err) {
             console.log(err)

@@ -32,7 +32,7 @@ app.post("/login", sessionController.login)
 app.get("/user", userController.getAllUsers)
 app.post("/user", userController.addUser)
 app.put("/user", userController.updateUser)
-app.delete("/user", userController.deleteUser)
+app.delete("/user/:userId", userController.deleteUser)
 app.post("/forgetPassword",userController.forgetPassword)
 app.post("/updatepassword",userController.updatePassword)
 
@@ -40,67 +40,67 @@ app.post("/updatepassword",userController.updatePassword)
 app.get("/suggestion", suggestionController.getAllSuggestions)
 app.post("/suggestion", suggestionController.addSuggestion)
 app.put("/suggestion", suggestionController.updateSuggestion)
-app.delete("/suggestion", suggestionController.deleteSuggestion)
+app.delete("/suggestion/:suggestionId", suggestionController.deleteSuggestion)
 
 //Role Api
 app.get("/role", roleController.getAllRoles)
 app.post("/role", roleController.addRole)
 app.put("/role", roleController.updateRole)
-app.delete("/role", roleController.deleteRole)
+app.delete("/role/:roleId", roleController.deleteRole)
 
 //Staff Api
 app.get("/staff", staffController.getAllStaff)
 app.post("/staff", staffController.addStaff)
 app.put("/staff", staffController.updateStaff)
-app.delete("/staff", staffController.deleteStaff)
+app.delete("/staff/:staffId", staffController.deleteStaff)
 
 //Maintenance Api
 app.get("/maintenance", maintenanceController.getAllMaintenance)
 app.post("/maintenance", maintenanceController.addMaintenance)
 app.put("/maintenance", maintenanceController.updateMaintenance)
-app.delete("/maintenance", maintenanceController.deleteMaintenance)
+app.delete("/maintenance/:maintenanceId", maintenanceController.deleteMaintenance)
 
 //House Api
 app.get("/house", houseController.getAllHouses)
 app.post("/house", houseController.addHouse)
 app.put("/house", houseController.updateHouse)
-app.delete("/house", houseController.deletehouse)
+app.delete("/house/:houseId", houseController.deletehouse)
 
 //Visitor Api
 app.get("/visitor", visitorController.getAllvisitors)
 app.post("/visitor", visitorController.addvisitor)
 app.put("/visitor", visitorController.updatevisitor)
-app.delete("/visitor", visitorController.deletevisitor)
+app.delete("/visitor/:visitorId", visitorController.deletevisitor)
 
 //Delivery Api
 app.get("/delivery", deliveryController.getAlldeliverys)
 app.post("/delivery", deliveryController.adddelivery)
 app.put("/delivery", deliveryController.updatedelivery)
-app.delete("/delivery", deliveryController.deletedelivery)
+app.delete("/delivery/:deliveryId", deliveryController.deletedelivery)
 
 //Place Api
 app.get("/place", placeController.getAllPlaces)
 app.post("/place", placeController.addPlace)
 app.put("/place", placeController.updatePlace)
-app.delete("/place", placeController.deletePlace)
+app.delete("/place/:placeId", placeController.deletePlace)
 
 //event Api
 app.post("/event", eventController.addEvent)
 app.put("/event", eventController.updateEvent)
 app.get("/event", eventController.getAllEvents)
-app.delete("/event", eventController.deleteEvent)
+app.delete("/event/:eventId", eventController.deleteEvent)
 
 //Complain Api
 app.post("/complaint", complaintController.addcomplaint)
 app.put("/complaint", complaintController.updatecomplaint)
 app.get("/complaint", complaintController.getAllcomplaint)
-app.delete("/complaint", complaintController.deletecomplaint)
+app.delete("/complaint/:complaintId", complaintController.deletecomplaint)
 
 //Member Api
 app.post("/member", memberController.addMember)
 app.put("/member", memberController.updateMember)
 app.get("/member", memberController.getAllMembers)
-app.delete("/member", memberController.deleteMember)
+app.delete("/member/:memberId", memberController.deleteMember)
 
 
 

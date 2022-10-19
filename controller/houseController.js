@@ -127,7 +127,7 @@ module.exports.updateHouse = function (req, res) {
 
 //deleteHouse
 module.exports.deletehouse = function (req, res) {
-    let houseId = req.body.houseId
+    let houseId = req.params.houseId
     houseModel.deleteOne({ _id: houseId }, function (err, data) {
         if (err) {
             console.log(err)

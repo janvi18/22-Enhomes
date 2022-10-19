@@ -178,7 +178,7 @@ module.exports.updateEvent = function (req, res) {
 }
 //deleteevent
 module.exports.deleteEvent = function (req, res) {
-    let eventId = req.body.eventId
+    let eventId = req.params.eventId
     eventModel.deleteOne({ _id: eventId }, function (err, data) {
         if (err) {
             console.log(err)

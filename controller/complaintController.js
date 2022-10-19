@@ -159,7 +159,7 @@ module.exports.updatecomplaint = function (req, res) {
 
 //delete complaint
 module.exports.deletecomplaint = function (req, res) {
-    let complaintId = req.body.complaintId
+    let complaintId = req.params.complaintId
     complaintModel.deleteOne({ _id: complaintId }, function (err, data) {
         if (err) {
             console.log(err)

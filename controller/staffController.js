@@ -232,10 +232,9 @@ module.exports.updateStaff = function (req, res) {
 
 }
 
-
 //Delete Staff
 module.exports.deleteStaff = function (req, res) {
-    let staffId = req.body.staffId
+    let staffId = req.params.staffId
 
     StaffModel.deleteOne({ _id: staffId }, function (err, data) {
         if (err) {

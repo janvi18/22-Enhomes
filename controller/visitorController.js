@@ -151,7 +151,7 @@ module.exports.updatevisitor = function (req, res) {
 
 //deletevisitor
 module.exports.deletevisitor = function (req, res) {
-    let visitorId = req.body.visitorId
+    let visitorId = req.params.visitorId
     visitorModel.deleteOne({ _id: visitorId }, function (err, data) {
         if (err) {
             console.log(err)

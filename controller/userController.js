@@ -20,21 +20,21 @@ module.exports.forgetPassword = function (req, res) {
         else {
 
             console.log(data);
-            if(data ){ 
-                    //otp generate
-                    let otp = parseInt((Math.random() * 100000)); 
-                    //mail send 
-                    userModel.updateOne({"email":email},{"otp":otp},function(err,data){
-                        console.log("update one ");
-                        console.log(err);
-                        console.log(data);
-                    })    
+            if (data) {
+                //otp generate
+                let otp = parseInt((Math.random() * 100000));
+                //mail send 
+                userModel.updateOne({ "email": email }, { "otp": otp }, function (err, data) {
+                    console.log("update one ");
+                    console.log(err);
+                    console.log(data);
+                })
                 res.json({
                     "status": 200,
                     "data": email,
                     "msg": "OTP successfully send to your email!!"
                 })
-            }else{
+            } else {
                 res.json({
                     "status": -1,
                     "data": email,
@@ -48,29 +48,29 @@ module.exports.forgetPassword = function (req, res) {
 
 //update password 
 
-module.exports.updatePassword = function(req,res){
+module.exports.updatePassword = function (req, res) {
 
     let email = req.body.email;
     let password = req.body.password;
-    let otp = req.body.otp ; 
+    let otp = req.body.otp;
 
 
-    userModel.findOne({"email":email},function(err,data){
-        if(data){
-            if(data.otp == otp ){
-                userModel.updateOne({"email":email},{"password":password},function(err,data){
+    userModel.findOne({ "email": email }, function (err, data) {
+        if (data) {
+            if (data.otp == otp) {
+                userModel.updateOne({ "email": email }, { "password": password }, function (err, data) {
                     console.log("Password modified...");
                     res.json({
-                        status:200,
-                        data:email,
-                        msg:"password modifed..."
+                        status: 200,
+                        data: email,
+                        msg: "password modifed..."
                     })
                 })
-            }else{
+            } else {
                 res.json({
-                    status:-1,
-                    data:req.body,
-                    msg:"Invalid otp"
+                    status: -1,
+                    data: req.body,
+                    msg: "Invalid otp"
                 })
             }
         }
@@ -314,7 +314,7 @@ module.exports.updateUser = function (req, res) {
 
 //Delete User
 module.exports.deleteUser = function (req, res) {
-    let userId = req.body.userId
+    let userId = req.params.userId
 
     UserModel.deleteOne({ _id: userId }, function (err, data) {
         if (err) {

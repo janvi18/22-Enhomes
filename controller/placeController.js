@@ -130,7 +130,7 @@ module.exports.updatePlace = function (req, res) {
 
 //deletePlace
 module.exports.deletePlace = function (req, res) {
-    let placeId = req.body.placeId
+    let placeId = req.params.placeId
     placeModel.deleteOne({ _id: placeId }, function (err, data) {
         if (err) {
             console.log(err)
