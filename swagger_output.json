@@ -1128,7 +1128,7 @@
         }
       }
     },
-    "/complaint": {
+    "/feedback": {
       "post": {
         "description": "",
         "parameters": [
@@ -1147,7 +1147,7 @@
                 "date": {
                   "example": "any"
                 },
-                "complaint": {
+                "feedback": {
                   "example": "any"
                 },
                 "isResolved": {
@@ -1172,13 +1172,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "complaintId": {
+                "feedbackId": {
                   "example": "any"
                 },
                 "date": {
                   "example": "any"
                 },
-                "complaint": {
+                "feedback": {
                   "example": "any"
                 },
                 "isResolved": {
@@ -1212,7 +1212,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "complaintId": {
+                "feedbackId": {
                   "example": "any"
                 }
               }

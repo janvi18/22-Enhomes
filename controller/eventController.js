@@ -3,7 +3,6 @@ const validator = require("validator")
 
 module.exports.addEvent = function (req, res) {
 
-    let user = req.body.user
     let house = req.body.house
     let place = req.body.place
     let eventDate = req.body.eventDate
@@ -12,7 +11,6 @@ module.exports.addEvent = function (req, res) {
     let rent = req.body.rent
 
     let event = new eventModel({
-        "user": user,
         "house": house,
         "place": place,
         "eventDate": eventDate,
@@ -81,7 +79,7 @@ module.exports.addEvent = function (req, res) {
 
 //getAllevent
 module.exports.getAllEvents = function (req, res) {
-    eventModel.find().populate("user").populate("house").populate("place").exec(function (err, data) {
+    eventModel.find().populate("house").populate("place").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({

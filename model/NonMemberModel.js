@@ -3,10 +3,9 @@ const mongoose = require("mongoose")
 const visitorSchema = new mongoose.Schema({
     visitorName: String,
     arrivingTime: String,
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-    },
+    isVisited:String,
+    pickup:String,
+    status:String,
     house: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "house"

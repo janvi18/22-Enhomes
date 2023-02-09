@@ -3,16 +3,22 @@ const validator = require("validator")
 //addvisitor
 
 module.exports.addvisitor = function (req, res) {
-    let user = req.body.user
     let house = req.body.house
     let visitorName = req.body.visitorName
     let arrivingTime = req.body.arrivingTime
+    let isVisited = req.body.isVisited
+    let pickup = req.body.pickup
+    let status = req.body.status
+
 
     let visitor = new visitorModel({
-        "user": user,
         "house": house,
         "visitorName": visitorName,
         "arrivingTime": arrivingTime,
+        "isVisited": isVisited,
+        "pickup": pickup,
+        "status": status
+
     })
 
     let isError = false;
@@ -28,6 +34,24 @@ module.exports.addvisitor = function (req, res) {
         isError = true;
         err.push({
             "ArrivingTime Error": "Please Enter Valid Time"
+        })
+    }
+    if (isVisited == undefined || validator.isAlpha(isVisited) == false || isVisited.trim().length == 0) {
+        isError = true;
+        err.push({
+            "isVisited Error": "Please Enter Valid Info.."
+        })
+    }
+    if (pickup == undefined || validator.isAlpha(pickup) == false || pickup.trim().length == 0) {
+        isError = true;
+        err.push({
+            "pickup Error": "Please Enter Valid Info.."
+        })
+    }
+    if (status == undefined || validator.isAlpha(status) == false || status.trim().length == 0) {
+        isError = true;
+        err.push({
+            "status Error": "Please Enter Valid Info.."
         })
     }
 
@@ -64,7 +88,7 @@ module.exports.addvisitor = function (req, res) {
 
 //getAllvisitors
 module.exports.getAllvisitors = function (req, res) {
-    visitorModel.find().populate("user").populate("house").exec(function (err, data) {
+    visitorModel.find().populate("house").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -90,7 +114,9 @@ module.exports.updatevisitor = function (req, res) {
     let visitorId = req.body.visitorId
     let visitorName = req.body.visitorName
     let arrivingTime = req.body.arrivingTime
-
+    let isVisited = req.body.isVisited
+    let pickup = req.body.pickup
+    let status = req.body.status
 
     let isError = false;
     let err = [];
@@ -113,10 +139,24 @@ module.exports.updatevisitor = function (req, res) {
             })
         }
     }
-
-
-
-
+    if (isVisited == undefined || validator.isAlpha(isVisited) == false || isVisited.trim().length == 0) {
+        isError = true;
+        err.push({
+            "isVisited Error": "Please Enter Valid Info.."
+        })
+    }
+    if (pickup == undefined || validator.isAlpha(pickup) == false || pickup.trim().length == 0) {
+        isError = true;
+        err.push({
+            "pickup Error": "Please Enter Valid Info.."
+        })
+    }
+    if (status == undefined || validator.isAlpha(status) == false || status.trim().length == 0) {
+        isError = true;
+        err.push({
+            "status Error": "Please Enter Valid Info.."
+        })
+    }
 
     if (isError) {
         console.log(err)
@@ -127,7 +167,7 @@ module.exports.updatevisitor = function (req, res) {
         })
     }
     else {
-        visitorModel.updateOne({ _id: visitorId }, { visitorName: visitorName, arrivingTime: arrivingTime }, function (err, data) {
+        visitorModel.updateOne({ _id: visitorId }, { visitorName: visitorName, arrivingTime: arrivingTime, isVisited: isVisited, pickup: pickup, status: status }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

@@ -5,9 +5,7 @@ const validator = require("validator")
 module.exports.addMaintenance = function (req, res) {
     let house = req.body.house
     let creationDate = req.body.creationDate
-    let month = req.body.month
     let maintenanceAmount = req.body.maintenanceAmount
-    let maintenancePaid = req.body.maintenancePaid
     let paymentDate = req.body.paymentDate
     let lastDate = req.body.lastDate
     let penalty = req.body.penalty
@@ -18,9 +16,7 @@ module.exports.addMaintenance = function (req, res) {
     let maintenance = new MaintenanceModel({
         "house": house,
         "creationDate": creationDate,
-        "month": month,
         "maintenanceAmount": maintenanceAmount,
-        "maintenancePaid": maintenancePaid,
         "paymentDate": paymentDate,
         "lastDate": lastDate,
         "penalty": penalty
@@ -32,29 +28,10 @@ module.exports.addMaintenance = function (req, res) {
             "CreationDate Error": "Enter Valid Date"
         })
     }
-    let mth = month.toLowerCase()
-    if (mth == undefined || mth != "january" && mth != "february" && mth != "march" && mth != "april" && mth != "may" && mth != "june" && mth != "july" && mth != "august" && mth != "september" && mth != "october" && mth != "november" && mth != "december") {
-        isError = true;
-        err.push({
-            "Month Error": "Enter Valid Month"
-        })
-    }
     if (maintenanceAmount == undefined || validator.isNumeric(maintenanceAmount) == false) {
         isError = true;
         err.push({
             "MaintenanceAmount Error": "Enter Valid Amount"
-        })
-    }
-    if (maintenancePaid == undefined) {
-        isError = true;
-        err.push({
-            "maintenancePaid Error": "Enter Valid information"
-        })
-    }
-    if (maintenancePaid != "true" && maintenancePaid != "false") {
-        isError = true;
-        err.push({
-            "maintenancePaid Error": "Enter Valid information"
         })
     }
     if (paymentDate == undefined || validator.isDate(paymentDate) == false) {
@@ -112,9 +89,7 @@ module.exports.addMaintenance = function (req, res) {
 module.exports.updateMaintenance = function (req, res) {
     let maintenanceId = req.body.maintenanceId
     let creationDate = req.body.creationDate
-    let month = req.body.month
     let maintenanceAmount = req.body.maintenanceAmount
-    let maintenancePaid = req.body.maintenancePaid
     let paymentDate = req.body.paymentDate
     let lastDate = req.body.lastDate
     let penalty = req.body.penalty
@@ -131,31 +106,11 @@ module.exports.updateMaintenance = function (req, res) {
             })
         }
     }
-
-    if (month != undefined) {
-        let mth = month.toLowerCase()
-        if (mth != "january" && mth != "february" && mth != "march" && mth != "april" && mth != "may" && mth != "june" && mth != "july" && mth != "august" && mth != "september" && mth != "october" && mth != "november" && mth != "december") {
-            isError = true;
-            err.push({
-                "Month Error": "Enter Valid Month"
-            })
-        }
-    }
-
     if (maintenanceAmount != undefined) {
         if (validator.isNumeric(maintenanceAmount) == false) {
             isError = true;
             err.push({
                 "MaintenanceAmount Error": "Enter Valid Amount"
-            })
-        }
-    }
-
-    if (maintenancePaid != undefined) {
-        if (maintenancePaid != "true" && maintenancePaid != "false") {
-            isError = true;
-            err.push({
-                "maintenancePaid Error": "Enter Valid information"
             })
         }
     }
@@ -199,8 +154,7 @@ module.exports.updateMaintenance = function (req, res) {
     }
     else {
         MaintenanceModel.updateOne({ _id: maintenanceId }, {
-            creationDate: creationDate, month: month,
-            maintenanceAmount: maintenanceAmount, maintenancePaid: maintenancePaid, paymentDate: paymentDate,
+            creationDate: creationDate, maintenanceAmount: maintenanceAmount, paymentDate: paymentDate,
             lastDate: lastDate, penalty: penalty
         }, function (err, data) {
             if (err) {

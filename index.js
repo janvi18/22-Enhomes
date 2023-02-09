@@ -14,7 +14,7 @@ const visitorController = require("./controller/visitorController")
 const deliveryController = require("./controller/deliveryController")
 const placeController = require("./controller/placeController")
 const sessionController = require("./controller/sessionController")
-const complaintController = require("./controller/complaintController")
+const feedbackController = require("./controller/feedbackController")
 const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
 
@@ -91,10 +91,10 @@ app.get("/event", eventController.getAllEvents)
 app.delete("/event/:eventId", eventController.deleteEvent)
 
 //Complain Api
-app.post("/complaint", complaintController.addcomplaint)
-app.put("/complaint", complaintController.updatecomplaint)
-app.get("/complaint", complaintController.getAllcomplaint)
-app.delete("/complaint/:complaintId", complaintController.deletecomplaint)
+app.post("/feedback", feedbackController.addfeedback)
+app.put("/feedback", feedbackController.updatefeedback)
+app.get("/feedback", feedbackController.getAllfeedback)
+app.delete("/feedback/:feedbackId", feedbackController.deletefeedback)
 
 //Member Api
 app.post("/member", memberController.addMember)

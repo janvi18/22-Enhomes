@@ -1,21 +1,21 @@
-const complaintModel = require("../model/complaintModel")
+const feedbackModel = require("../model/feedbackModel")
 const validator = require("validator")
 
-module.exports.addcomplaint = function (req, res) {
+module.exports.addfeedback = function (req, res) {
 
-    let user = req.body.user
     let house = req.body.house
     let date = req.body.date
-    let complaint = req.body.complaint
+    let feedback = req.body.feedback
+    let acknowledgement = req.body.acknowledgement
 
     console.log(req.body)
 
-    let complaintName = new complaintModel({
+    let feedbackName = new feedbackModel({
 
-        "user": user,
         "house": house,
         "date": date,
-        "complaint": complaint,
+        "feedback": feedback,
+        "acknowledgement": acknowledgement
     })
 
     let isError = false;
@@ -27,13 +27,13 @@ module.exports.addcomplaint = function (req, res) {
             "Date Error": "Enter Valid Date"
         })
     }
-    if (complaint == undefined || complaint.trim().length == 0) {
+    if (feedback == undefined || feedback.trim().length == 0) {
         isError = true;
         err.push({
-            "complaint Error": "Please Enter Valid complaint"
+            "feedback Error": "Please Enter Valid feedback"
         })
     }
-   
+
 
     if (isError) {
         console.log(err)
@@ -44,7 +44,7 @@ module.exports.addcomplaint = function (req, res) {
         })
     }
     else {
-        complaintName.save(function (err, data) {
+        feedbackName.save(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -57,16 +57,16 @@ module.exports.addcomplaint = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "Complain Added!!"
+                    "msg": "feedback Added!!"
                 })
             }
         })
     }
 }
 
-//getAllcomplaint
-module.exports.getAllcomplaint = function (req, res) {
-    complaintModel.find().populate("user").populate("house").exec(function (err, data) {
+//feedback
+module.exports.getAllfeedback = function (req, res) {
+    feedbackModel.find().populate("house").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -79,39 +79,39 @@ module.exports.getAllcomplaint = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "Complains Retrived!!"
+                "msg": "feedback Retrived!!"
             })
         }
     })
 }
 
 
-//update complaint
-module.exports.updatecomplaint = function (req, res) {
+//update feedback
+module.exports.updatefeedback = function (req, res) {
 
-    let complaintId = req.body.complaintId
+    let feedbackId = req.body.feedbackId
     let date = req.body.date
-    let complaint = req.body.complaint
+    let feedback = req.body.feedback
 
 
     let isError = false;
     let err = [];
 
-    if (complaintId != undefined) {
-        if (complaintId == undefined || complaintId.trim().length == 0) {
+    if (feedbackId != undefined) {
+        if (feedbackId == undefined || feedbackId.trim().length == 0) {
             isError = true;
             err.push({
-                "complainId Error": "Please Enter Valid complaintId"
+                "feedbackId Error": "Please Enter Valid feedbackId"
             })
         }
     }
 
 
-    if (complaint != undefined) {
-        if (validator.isAlpha(complaint) == false || complaint.trim().length == 0) {
+    if (feedback != undefined) {
+        if (validator.isAlpha(feedback) == false || feedback.trim().length == 0) {
             isError = true;
             err.push({
-                "Complaint Error": "Please Enter Valid Type"
+                "feedback Error": "Please Enter Valid Type"
             })
         }
     }
@@ -137,7 +137,7 @@ module.exports.updatecomplaint = function (req, res) {
         })
     }
     else {
-        complaintModel.updateOne({ _id: complaintId }, { date: date, complaint: complaint }, function (err, data) {
+        feedbackModel.updateOne({ _id: feedbackId }, { date: date, feedback: feedback }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -150,17 +150,17 @@ module.exports.updatecomplaint = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "Complaint Updated!!"
+                    "msg": "feedback Updated!!"
                 })
             }
         })
     }
 }
 
-//delete complaint
-module.exports.deletecomplaint = function (req, res) {
-    let complaintId = req.params.complaintId
-    complaintModel.deleteOne({ _id: complaintId }, function (err, data) {
+//delete feedback
+module.exports.deletefeedback = function (req, res) {
+    let feedbackId = req.params.feedbackId
+    feedbackModel.deleteOne({ _id: feedbackId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -173,7 +173,7 @@ module.exports.deletecomplaint = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "Complaint Deleted!!"
+                "msg": "feedback Deleted!!"
             })
         }
     })

@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
     },
-    house: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "House"
-    },
     otp:Number
 
 })
