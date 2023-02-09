@@ -64,7 +64,7 @@ module.exports.addfeedback = function (req, res) {
     }
 }
 
-//feedback
+//get all feedback
 module.exports.getAllfeedback = function (req, res) {
     feedbackModel.find().populate("house").exec(function (err, data) {
         if (err) {

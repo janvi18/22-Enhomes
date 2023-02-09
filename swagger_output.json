@@ -739,7 +739,7 @@
         }
       }
     },
-    "/visitor": {
+    "/nonMember": {
       "get": {
         "description": "",
         "parameters": [],
@@ -764,7 +764,7 @@
                 "house": {
                   "example": "any"
                 },
-                "visitorName": {
+                "nonMemberName": {
                   "example": "any"
                 },
                 "arrivingTime": {
@@ -792,10 +792,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "visitorId": {
+                "nonMemberId": {
                   "example": "any"
                 },
-                "visitorName": {
+                "nonMemberName": {
                   "example": "any"
                 },
                 "arrivingTime": {
@@ -823,7 +823,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "visitorId": {
+                "nonMemberId": {
                   "example": "any"
                 }
               }

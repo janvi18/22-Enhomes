@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
-const visitorSchema = new mongoose.Schema({
-    visitorName: String,
+const nonMemberSchema = new mongoose.Schema({
+    nonMemberName: String,
     arrivingTime: String,
     isVisited:String,
     pickup:String,
@@ -13,4 +13,4 @@ const visitorSchema = new mongoose.Schema({
 
 })
 
-module.exports = mongoose.model("Visitor", visitorSchema)
+module.exports = mongoose.model("nonMember", nonMemberSchema)

@@ -1,19 +1,19 @@
-const visitorModel = require("../model/visitorModel")
+const nonMemberModel = require("../model/NonMemberModel")
 const validator = require("validator")
-//addvisitor
+//add nonMember
 
-module.exports.addvisitor = function (req, res) {
+module.exports.addNonMember = function (req, res) {
     let house = req.body.house
-    let visitorName = req.body.visitorName
+    let name = req.body.name
     let arrivingTime = req.body.arrivingTime
     let isVisited = req.body.isVisited
     let pickup = req.body.pickup
     let status = req.body.status
 
 
-    let visitor = new visitorModel({
+    let nonMember = new nonMemberModel({
         "house": house,
-        "visitorName": visitorName,
+        "name": name,
         "arrivingTime": arrivingTime,
         "isVisited": isVisited,
         "pickup": pickup,
@@ -24,10 +24,10 @@ module.exports.addvisitor = function (req, res) {
     let isError = false;
     let err = [];
 
-    if (visitorName == undefined || validator.isAlpha(visitorName) == false || visitorName.trim().length == 0) {
+    if (name == undefined || validator.isAlpha(name) == false || name.trim().length == 0) {
         isError = true;
         err.push({
-            "VisitorName Error": "Please Enter Valid Name"
+            "name Error": "Please Enter Valid Name"
         })
     }
     if (arrivingTime == undefined || validator.isNumeric(arrivingTime.toString()) == false) {
@@ -66,7 +66,7 @@ module.exports.addvisitor = function (req, res) {
         })
     }
     else {
-        visitor.save(function (err, data) {
+        nonMember.save(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -79,16 +79,16 @@ module.exports.addvisitor = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "Visitor Added!!"
+                    "msg": "nonMember Added!!"
                 })
             }
         })
     }
 }
 
-//getAllvisitors
-module.exports.getAllvisitors = function (req, res) {
-    visitorModel.find().populate("house").exec(function (err, data) {
+//getAllNonMember
+module.exports.getAllNonMember = function (req, res) {
+    nonMemberModel.find().populate("house").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -101,7 +101,7 @@ module.exports.getAllvisitors = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "Visitors Retrived!!"
+                "msg": "NonMember Retrived!!"
             })
         }
     })
@@ -109,10 +109,10 @@ module.exports.getAllvisitors = function (req, res) {
 
 
 
-//update visitor
-module.exports.updatevisitor = function (req, res) {
-    let visitorId = req.body.visitorId
-    let visitorName = req.body.visitorName
+//update nonmemebr
+module.exports.updateNonMember = function (req, res) {
+    let nonMemberId = req.body.nonMemberId
+    let name = req.body.name
     let arrivingTime = req.body.arrivingTime
     let isVisited = req.body.isVisited
     let pickup = req.body.pickup
@@ -122,11 +122,11 @@ module.exports.updatevisitor = function (req, res) {
     let err = [];
 
 
-    if (visitorName != undefined) {
-        if (validator.isAlpha(visitorName) == false || visitorName.trim().length == 0) {
+    if (name != undefined) {
+        if (validator.isAlpha(name) == false || name.trim().length == 0) {
             isError = true;
             err.push({
-                "VisitorName Error": "Please Enter Valid Name"
+                "name Error": "Please Enter Valid Name"
             })
         }
     }
@@ -167,7 +167,7 @@ module.exports.updatevisitor = function (req, res) {
         })
     }
     else {
-        visitorModel.updateOne({ _id: visitorId }, { visitorName: visitorName, arrivingTime: arrivingTime, isVisited: isVisited, pickup: pickup, status: status }, function (err, data) {
+        nonMemberModel.updateOne({ _id: nonMemberId }, { name: name, arrivingTime: arrivingTime, isVisited: isVisited, pickup: pickup, status: status }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -180,7 +180,7 @@ module.exports.updatevisitor = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "Visitor Updated!!"
+                    "msg": "NonMember Updated!!"
                 })
             }
         })
@@ -189,10 +189,10 @@ module.exports.updatevisitor = function (req, res) {
 
 
 
-//deletevisitor
-module.exports.deletevisitor = function (req, res) {
-    let visitorId = req.params.visitorId
-    visitorModel.deleteOne({ _id: visitorId }, function (err, data) {
+//delete nonMember
+module.exports.deleteNonMember = function (req, res) {
+    let nonMemberId = req.params.nonMemberId
+    nonMemberModel.deleteOne({ _id: nonMemberId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -205,7 +205,7 @@ module.exports.deletevisitor = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "Visitor Deleted!!"
+                "msg": "nonMember Deleted!!"
             })
         }
     })
