@@ -15,6 +15,7 @@ const feedbackController = require("./controller/feedbackController")
 const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
 const nonMemebrController = require("./controller/NonMemberController")
+const maintenanceMaster=require("./controller/maintenanceMasterController")
 
 
 const app = express()
@@ -52,6 +53,11 @@ app.post("/maintenance", maintenanceController.addMaintenance)
 app.put("/maintenance", maintenanceController.updateMaintenance)
 app.delete("/maintenance/:maintenanceId", maintenanceController.deleteMaintenance)
 
+//Maintenance Master Api
+app.get("/maintenanceMaster", maintenanceMaster.getAllMaintenance)
+app.post("/maintenanceMaster", maintenanceMaster.addMaintenance)
+app.put("/maintenanceMaster", maintenanceMaster.updateMaintenance)
+
 //House Api
 app.get("/house", houseController.getAllHouses)
 app.post("/house", houseController.addHouse)
@@ -69,6 +75,7 @@ app.post("/event", eventController.addEvent)
 app.put("/event", eventController.updateEvent)
 app.get("/event", eventController.getAllEvents)
 app.delete("/event/:eventId", eventController.deleteEvent)
+app.get("/getEventByDate/:startDate/:endDate",eventController.getCheckDate)
 
 //Feedback Api
 app.post("/feedback", feedbackController.addfeedback)
@@ -85,9 +92,8 @@ app.delete("/member/:memberId", memberController.deleteMember)
 //NonMember Api
 app.post("/nonmember", nonMemebrController.addNonMember)
 app.put("/nonmember", nonMemebrController.updateNonMember)
-app.get("/nonmember", nonMemebrController.getAllNonMembers)
+app.get("/nonmember", nonMemebrController.getAllNonMember)
 app.delete("/nonmember/:nonmemberId", nonMemebrController.deleteNonMember)
-
 
 const localDb = "mongodb://localhost/e-society-22";
 //const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";

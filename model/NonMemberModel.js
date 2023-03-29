@@ -1,16 +1,16 @@
 const mongoose = require("mongoose")
 
 const nonMemberSchema = new mongoose.Schema({
-    nonMemberName: String,
+    name: String,
     arrivingTime: String,
     isVisited:String,
     pickup:String,
     status:String,
     house: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "house"
+        ref: "House"
     },
 
 })
 
-module.exports = mongoose.model("nonMember", nonMemberSchema)
+module.exports = mongoose.model("nonmembers", nonMemberSchema)

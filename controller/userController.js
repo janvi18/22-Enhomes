@@ -1,4 +1,3 @@
-const UserModel = require("../model/userModel")
 const validator = require("validator")
 const userModel = require("../model/userModel")
 
@@ -75,16 +74,11 @@ module.exports.updatePassword = function (req, res) {
             }
         }
     })
-
-
 }
-
-
 
 //add User
 module.exports.addUser = function (req, res) {
     let role = req.body.role
-    let house = req.body.house
     let firstName = req.body.firstName
     let lastName = req.body.lastName
     let dateOfBirth = req.body.dateOfBirth
@@ -95,9 +89,8 @@ module.exports.addUser = function (req, res) {
     let password = req.body.password
 
 
-    let user = new UserModel({
+    let user = new userModel({
         "role": role,
-        "house": house,
         "firstName": firstName,
         "lastName": lastName,
         "dateOfBirth": dateOfBirth,
@@ -124,12 +117,6 @@ module.exports.addUser = function (req, res) {
             "LastName Error": "Please Enter Valid Name"
         })
     }
-    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
-        isError = true;
-        err.push({
-            "DateOfBirth Error": "Enter Valid Date"
-        })
-    }
     if (age == undefined || validator.isNumeric(age.toString()) == false) {
         isError = true;
         err.push({
@@ -154,13 +141,8 @@ module.exports.addUser = function (req, res) {
             "Email Error": "Please Enter Valid Email"
         })
     }
-    if (password == undefined || validator.isAlpha(password) == false || password.trim().length == 0) {
-        isError = true;
-        err.push({
-            "Password Error": "Please Enter Valid Password"
-        })
-    }
 
+    console.log(password)
 
     if (isError) {
         res.json({
@@ -226,15 +208,6 @@ module.exports.updateUser = function (req, res) {
         }
     }
 
-    if (dateOfBirth != undefined) {
-        if (validator.isDate(dateOfBirth) == false) {
-            isError = true;
-            err.push({
-                "DateOfBirth Error": "Enter Valid Date"
-            })
-        }
-    }
-
     if (age != undefined) {
         if (validator.isNumeric(age.toString()) == false) {
             isError = true;
@@ -281,7 +254,6 @@ module.exports.updateUser = function (req, res) {
     }
 
 
-
     if (isError) {
         res.json({
             "status": -1,
@@ -290,7 +262,7 @@ module.exports.updateUser = function (req, res) {
         })
     }
     else {
-        UserModel.updateOne({ _id: userId }, { "firstName": firstName, "lastName": lastName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo, "email": email }, function (err, data) {
+        userModel.updateOne({ _id: userId }, { "firstName": firstName, "lastName": lastName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo, "email": email }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -316,7 +288,7 @@ module.exports.updateUser = function (req, res) {
 module.exports.deleteUser = function (req, res) {
     let userId = req.params.userId
 
-    UserModel.deleteOne({ _id: userId }, function (err, data) {
+    userModel.deleteOne({ _id: userId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -338,7 +310,7 @@ module.exports.deleteUser = function (req, res) {
 
 //List Mmebers
 module.exports.getAllUsers = function (req, res) {
-    UserModel.find().populate("role").populate("house").exec(function (err, data) {
+    userModel.find().populate("role").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({

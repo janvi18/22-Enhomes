@@ -30,32 +30,6 @@ module.exports.addNonMember = function (req, res) {
             "name Error": "Please Enter Valid Name"
         })
     }
-    if (arrivingTime == undefined || validator.isNumeric(arrivingTime.toString()) == false) {
-        isError = true;
-        err.push({
-            "ArrivingTime Error": "Please Enter Valid Time"
-        })
-    }
-    if (isVisited == undefined || validator.isAlpha(isVisited) == false || isVisited.trim().length == 0) {
-        isError = true;
-        err.push({
-            "isVisited Error": "Please Enter Valid Info.."
-        })
-    }
-    if (pickup == undefined || validator.isAlpha(pickup) == false || pickup.trim().length == 0) {
-        isError = true;
-        err.push({
-            "pickup Error": "Please Enter Valid Info.."
-        })
-    }
-    if (status == undefined || validator.isAlpha(status) == false || status.trim().length == 0) {
-        isError = true;
-        err.push({
-            "status Error": "Please Enter Valid Info.."
-        })
-    }
-
-
 
     if (isError) {
         console.log(err)
@@ -131,33 +105,6 @@ module.exports.updateNonMember = function (req, res) {
         }
     }
 
-    if (arrivingTime != undefined) {
-        if (validator.isNumeric(arrivingTime.toString()) == false) {
-            isError = true;
-            err.push({
-                "ArrivingTime Error": "Please Enter Valid Time"
-            })
-        }
-    }
-    if (isVisited == undefined || validator.isAlpha(isVisited) == false || isVisited.trim().length == 0) {
-        isError = true;
-        err.push({
-            "isVisited Error": "Please Enter Valid Info.."
-        })
-    }
-    if (pickup == undefined || validator.isAlpha(pickup) == false || pickup.trim().length == 0) {
-        isError = true;
-        err.push({
-            "pickup Error": "Please Enter Valid Info.."
-        })
-    }
-    if (status == undefined || validator.isAlpha(status) == false || status.trim().length == 0) {
-        isError = true;
-        err.push({
-            "status Error": "Please Enter Valid Info.."
-        })
-    }
-
     if (isError) {
         console.log(err)
         res.json({
@@ -167,7 +114,7 @@ module.exports.updateNonMember = function (req, res) {
         })
     }
     else {
-        nonMemberModel.updateOne({ _id: nonMemberId }, { name: name, arrivingTime: arrivingTime, isVisited: isVisited, pickup: pickup, status: status }, function (err, data) {
+        nonMemberModel.updateOne({ _id: nonMemberId }, { "name": name, "arrivingTime": arrivingTime, "isVisited": isVisited, "pickup": pickup, "status": status }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

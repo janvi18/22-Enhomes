@@ -21,16 +21,16 @@ module.exports.addfeedback = function (req, res) {
     let isError = false;
     let err = [];
 
-    if (date == undefined || validator.isDate(date) == false) {
-        isError = true;
-        err.push({
-            "Date Error": "Enter Valid Date"
-        })
-    }
     if (feedback == undefined || feedback.trim().length == 0) {
         isError = true;
         err.push({
             "feedback Error": "Please Enter Valid feedback"
+        })
+    }
+    if (acknowledgement == undefined || acknowledgement.trim().length == 0) {
+        isError = true;
+        err.push({
+            "acknowledgement Error": "Please Enter Valid acknowledgement"
         })
     }
 
@@ -89,43 +89,32 @@ module.exports.getAllfeedback = function (req, res) {
 //update feedback
 module.exports.updatefeedback = function (req, res) {
 
-    let feedbackId = req.body.feedbackId
     let date = req.body.date
     let feedback = req.body.feedback
+    let acknowledgement = req.body.acknowledgement
 
 
     let isError = false;
     let err = [];
-
-    if (feedbackId != undefined) {
-        if (feedbackId == undefined || feedbackId.trim().length == 0) {
-            isError = true;
-            err.push({
-                "feedbackId Error": "Please Enter Valid feedbackId"
-            })
-        }
-    }
 
 
     if (feedback != undefined) {
         if (validator.isAlpha(feedback) == false || feedback.trim().length == 0) {
             isError = true;
             err.push({
-                "feedback Error": "Please Enter Valid Type"
+                "feedback Error": "Please Enter Valid feedback"
             })
         }
     }
 
-    if (date != undefined) {
-        if (date == undefined || date.trim().length == 0) {
+    if (acknowledgement != undefined) {
+        if (validator.isAlpha(acknowledgement) == false || acknowledgement.trim().length == 0) {
             isError = true;
             err.push({
-                "date Error": "Please Enter Valid Information"
+                "acknowledgement Error": "Please Enter Valid acknowledgement"
             })
         }
     }
-
-
 
 
     if (isError) {
@@ -137,7 +126,7 @@ module.exports.updatefeedback = function (req, res) {
         })
     }
     else {
-        feedbackModel.updateOne({ _id: feedbackId }, { date: date, feedback: feedback }, function (err, data) {
+        feedbackModel.updateOne({ _id: feedbackId }, { date: date, feedback: feedback, acknowledgement: acknowledgement }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

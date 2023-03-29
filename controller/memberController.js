@@ -25,13 +25,6 @@ module.exports.addMember = function (req, res) {
     let isError = false;
     let err = [];
 
-
-    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
-        isError = true;
-        err.push({
-            "DateOfBirth Error": "Enter Valid Date"
-        })
-    }
     if (age == undefined || validator.isNumeric(age.toString()) == false) {
         isError = true;
         err.push({
@@ -89,6 +82,7 @@ module.exports.addMember = function (req, res) {
 //Update User
 module.exports.updateMember = function (req, res) {
     let memberId = req.body.memberId
+    let memberName = req.body.memberName
     let dateOfBirth = req.body.dateOfBirth
     let age = req.body.age
     let gender = req.body.gender
@@ -97,11 +91,11 @@ module.exports.updateMember = function (req, res) {
     let isError = false;
     let err = [];
 
-    if (dateOfBirth != undefined) {
-        if (validator.isDate(dateOfBirth) == false) {
+    if (memberName != undefined) {
+        if (validator.isAlpha(memberName) == false || memberName.trim().length == 0) {
             isError = true;
             err.push({
-                "DateOfBirth Error": "Enter Valid Date"
+                "memberName error": "Please enter member name"
             })
         }
     }
@@ -141,7 +135,7 @@ module.exports.updateMember = function (req, res) {
         })
     }
     else {
-        memberModel.updateOne({ _id: memberId }, { "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo }, function (err, data) {
+        memberModel.updateOne({ _id: memberId }, { "memberName" : memberName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
