@@ -16,6 +16,7 @@ const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
 const nonMemebrController = require("./controller/NonMemberController")
 const maintenanceMaster=require("./controller/maintenanceMasterController")
+const adminApiController=require("./controller/adminApiController")
 
 
 const app = express()
@@ -94,6 +95,12 @@ app.post("/nonmember", nonMemebrController.addNonMember)
 app.put("/nonmember", nonMemebrController.updateNonMember)
 app.get("/nonmember", nonMemebrController.getAllNonMember)
 app.delete("/nonmember/:nonmemberId", nonMemebrController.deleteNonMember)
+
+//Admin Api
+app.post("/admin", adminApiController.addAdmin)
+app.put("/admin", adminApiController.updateAdmin)
+app.get("/admin", adminApiController.getAllAdmins)
+app.delete("/admin/:adminId", adminApiController.deleteAdmin)
 
 const localDb = "mongodb://localhost/e-society-22";
 //const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";

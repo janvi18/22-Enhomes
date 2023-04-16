@@ -4,7 +4,7 @@ const validator = require("validator")
 //add member
 module.exports.addMember = function (req, res) {
 
-    let house = req.body.houseId
+    let house = req.body.house
     let memberName = req.body.memberName
     let dateOfBirth = req.body.dateOfBirth
     let age = req.body.age
