@@ -175,7 +175,7 @@ module.exports.deleteEvent = function (req, res) {
 module.exports.getCheckDate = function (req, res) {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
-
+    let place = req.params.place
     // eventModel.find({
     //     $or: [{ eventDate: { $gte: startDate, $lte: endDate } },
     //     { eventEndDate: { $gte: startDate, $lte: endDate } }]
@@ -194,7 +194,7 @@ module.exports.getCheckDate = function (req, res) {
     eventModel.find({
         $and: [{ eventDate: { $lte: startDate } },
         { eventEndDate: { $gte: endDate } }
-        ]
+        ],place:place
 
     }, function (err, data) {
 
@@ -209,17 +209,18 @@ module.exports.getCheckDate = function (req, res) {
             })
         }
         else {
+            console.log("first attempt...");
             console.log(data);
             if (data.length == 0) {
                 console.log("checkong end date")
                 eventModel.find({
-                    eventEndDate: { $gte: startDate, $lte: endDate }
+                    eventEndDate: { $gte: startDate, $lte: endDate },place:place
                 }, function (err, data2) {
                     if (data2.length == 0) {
                         console.log("checking final condition 10 and 15");
                         eventModel.find({
                             eventDate: { $gte: startDate, $lte: endDate }
-                        }, function (err, data3) {
+                        ,place:place}, function (err, data3) {
                             if (data3.length == 0) {
 
                                 res.json({
@@ -250,7 +251,7 @@ module.exports.getCheckDate = function (req, res) {
 
                 res.json({
                     "status": 200,
-                    "data": "set1",
+                    "data":  data,
                     "msg": "Event Retrived!!"
                 })
             }
@@ -262,38 +263,38 @@ module.exports.getCheckDate = function (req, res) {
 
 // event end date api
 
-module.exports.getCheckEndDate = function (req, res) {
-    let startDate = req.params.startDate
-    let endDate = req.params.endDate
+// module.exports.getCheckEndDate = function (req, res) {
+//     let startDate = req.params.startDate
+//     let endDate = req.params.endDate
 
-    //
-    eventModel.find({
-        eventDate: { $gte: startDate, $lte: endDate }
-    }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            if (data.length == 0) {
-                res.json({
-                    "status": 200,
-                    "data": data,
-                    "msg": "No Event Found!!"
-                })
-            } else {
-                res.json({
-                    "status": 200,
-                    "data": data,
-                    "msg": "Event Retrived!!"
-                })
-            }
-        }
-    })
-}
+//     //
+//     eventModel.find({
+//         eventDate: { $gte: startDate, $lte: endDate }
+//     }, function (err, data) {
+//         if (err) {
+//             console.log(err)
+//             res.json({
+//                 "status": -1,
+//                 "data": err,
+//                 "msg": "Something went Wrong...."
+//             })
+//         }
+//         else {
+//             if (data.length == 0) {
+//                 res.json({
+//                     "status": 200,
+//                     "data": data,
+//                     "msg": "No Event Found!!"
+//                 })
+//             } else {
+//                 res.json({
+//                     "status": 200,
+//                     "data": data,
+//                     "msg": "Event Retrived!!"
+//                 })
+//             }
+//         }
+//     })
+// }
 
 
