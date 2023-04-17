@@ -1,14 +1,10 @@
 const mongoose = require("mongoose")
 
 const eventSchema = new mongoose.Schema({
-    eventDate: String,
-    eventEndDate: String,
+    eventDate: Date,
+    eventEndDate: Date,
     eventDetails: String,
     rent: String,
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
 
     house: {
         type: mongoose.Schema.Types.ObjectId,

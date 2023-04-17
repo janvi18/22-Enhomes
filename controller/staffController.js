@@ -40,18 +40,6 @@ module.exports.addStaff = function (req, res) {
             "Type Error": "Please Enter Valid Type"
         })
     }
-    if (entryTime == undefined || validator.isNumeric(entryTime.toString()) == false) {
-        isError = true;
-        err.push({
-            "EntryTime Error": "Please Enter Valid Time"
-        })
-    }
-    if (exitTime == undefined || validator.isNumeric(exitTime.toString()) == false) {
-        isError = true;
-        err.push({
-            "ExitTime Error": "Please Enter Valid Time"
-        })
-    }
     let contact = contactNo.length
     if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contact != 10) {
         console.log(contact);
@@ -143,24 +131,6 @@ module.exports.updateStaff = function (req, res) {
         }
     }
 
-    if (entryTime != undefined) {
-        if (validator.isNumeric(entryTime.toString()) == false) {
-            isError = true;
-            err.push({
-                "EntryTime Error": "Please Enter Valid Time"
-            })
-        }
-    }
-
-    if (exitTime != undefined) {
-        if (validator.isNumeric(exitTime.toString()) == false) {
-            isError = true;
-            err.push({
-                "ExitTime Error": "Please Enter Valid Time"
-            })
-        }
-    }
-
     if (contactNo != undefined) {
         if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
             isError = true;
@@ -178,8 +148,6 @@ module.exports.updateStaff = function (req, res) {
             })
         }
     }
-
-
 
     if (agencyName != undefined) {
         if (validator.isAlpha(agencyName) == false || agencyName.trim().length == 0) {
@@ -232,10 +200,9 @@ module.exports.updateStaff = function (req, res) {
 
 }
 
-
 //Delete Staff
 module.exports.deleteStaff = function (req, res) {
-    let staffId = req.body.staffId
+    let staffId = req.params.staffId
 
     StaffModel.deleteOne({ _id: staffId }, function (err, data) {
         if (err) {

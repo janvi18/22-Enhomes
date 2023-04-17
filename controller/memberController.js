@@ -1,133 +1,201 @@
-//member_id
-//houseid
-//membername
-//dob
-//age
-//gender
-//contactno.
+const memberModel = require("../model/memberModel")
+const validator = require("validator")
 
-//add
-const MemberModule = require("../model/memberModel")
-
+//add member
 module.exports.addMember = function (req, res) {
 
-    let member_id = req.body.member_id
-    let house_id = req.body.house_id
+    let house = req.body.house
     let memberName = req.body.memberName
-    let DOB = req.body.DOB
+    let dateOfBirth = req.body.dateOfBirth
     let age = req.body.age
     let gender = req.body.gender
     let contactNo = req.body.contactNo
 
-    let newmember = new MemberModule({
-        "member_id": member_id,
-        "house_id": house_id,
+    let member = new memberModel({
+
+        "house": house,
         "memberName": memberName,
-        "dob": DOB,
+        "dateOfBirth": dateOfBirth,
         "age": age,
         "gender": gender,
-        "contactno": contactNo,
+        "contactNo": contactNo,
+
     })
-    newmember.save(function (error, data) {
 
-        if (error) {
-            console.log(error)
-            res.json({
-                msg: "unvalid information",
-                status: -1,
-                data: "fill informations"
-            })
-        }
-        else {
-            res.json({
-                msg: " New Member added",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}//add
+    let isError = false;
+    let err = [];
 
+    if (age == undefined || validator.isNumeric(age.toString()) == false) {
+        isError = true;
+        err.push({
+            "Age Error": "Please Enter Valid Age"
+        })
+    }
+    if (gender == undefined || gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+        isError = true;
+        err.push({
+            "Gender Error": "Please Enter Valid Gender"
+        })
+    }
+    if (contactNo == undefined || validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+        isError = true;
+        err.push({
+            "ContactNo Error": "Please Enter Valid ContactNo"
+        })
+    }
+    if (memberName == undefined || validator.isAlpha(memberName) == false || memberName.trim().length == 0) {
+        isError = true;
+        err.push({
+            "memberName error": "Please enter member name"
+        })
+    }
 
-//getAllMember
-module.exports.getAllMembers = function (req, res) {
-    MemberModule.find(function (error, data) {
-        if (error) {
-            console.log(error)
-            res.json({
-                msg: "unvalid information",
-                status: -1,
-                data: "fill informations"
-            })
-        }
-        else {
-            res.json({
-                msg: "All Member List",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}
-//allmembers
-
-//deleteMember
-module.exports.deleteMember = function (req, res) {
-
-    MemberModule.deleteOne({ id_member_id }, function (err, data) {
-        if (error) {
-            console.log(error)
-            res.json({
-                msg: "Member not deleted",
-                status: -1,
-                data: id_member_id
-            })
-        }
-        else {
-            res.json({
-                msg: "Member Removed",
-                status: 200,
-                data: data
-            })
-        }
-    })
-}//delete
-
-//update
-module.exports.updateMember = function (req, res) {
-    let member_id = req.body.member_id
-    let house_id = req.body.house_id
-    let memberName = req.body.memberName
-    let DOB = req.body.DOB
-    let age = req.body.age
-    let gender = req.body.gender
-    let contactNo = req.body.contactNo
-
-    MemberModule.updateOne(
-        { member_id: "member_id" },
-        { house_id: "house_id" },
-        { memberName: "memberName" },
-        { dob: "DOB" },
-        { age: "age" },
-        { gender: "gender" },
-        { contactno: "contactNo" },
-        function (err, data) {
-
-            if (error) {
-                console.log(error)
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong..."
+        })
+    }
+    else {
+        member.save(function (err, data) {
+            if (err) {
+                console.log(err)
                 res.json({
-                    msg: "Incomplete Informations",
-                    status: -1,
-                    data: data
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong..."
                 })
             }
             else {
                 res.json({
-                    msg: "Member updated",
-                    status: 200,
-                    data: data
+                    "status": 200,
+                    "data": data,
+                    "msg": "Member Added!!"
                 })
             }
+        })
+    }
+}
+
+
+//Update User
+module.exports.updateMember = function (req, res) {
+    let memberId = req.body.memberId
+    let memberName = req.body.memberName
+    let dateOfBirth = req.body.dateOfBirth
+    let age = req.body.age
+    let gender = req.body.gender
+    let contactNo = req.body.contactNo
+
+    let isError = false;
+    let err = [];
+
+    if (memberName != undefined) {
+        if (validator.isAlpha(memberName) == false || memberName.trim().length == 0) {
+            isError = true;
+            err.push({
+                "memberName error": "Please enter member name"
+            })
         }
-    )
-}//update
+    }
+
+    if (age != undefined) {
+        if (validator.isNumeric(age.toString()) == false) {
+            isError = true;
+            err.push({
+                "Age Error": "Please Enter Valid Age"
+            })
+        }
+    }
+
+    if (gender != undefined) {
+        if (gender.toLowerCase() != "male" && gender.toLowerCase() != "female") {
+            isError = true;
+            err.push({
+                "Gender Error": "Please Enter Valid Gender"
+            })
+        }
+    }
+
+    if (contactNo != undefined) {
+        if (validator.isNumeric(contactNo.toString()) == false || contactNo.length != 10) {
+            isError = true;
+            err.push({
+                "ContactNo Error": "Please Enter Valid ContactNo"
+            })
+        }
+    }
+
+    if (isError) {
+        res.json({
+            "status": -1,
+            "data": err,
+            "msg": "Something went Wrong...."
+        })
+    }
+    else {
+        memberModel.updateOne({ _id: memberId }, { "memberName" : memberName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo }, function (err, data) {
+            if (err) {
+                console.log(err)
+                res.json({
+                    "status": -1,
+                    "data": err,
+                    "msg": "Something went Wrong...."
+                })
+            }
+            else {
+                res.json({
+                    "status": 200,
+                    "data": data,
+                    "msg": "User Information Updated!!"
+                })
+            }
+        })
+    }
+}
+
+//Delete User
+module.exports.deleteMember = function (req, res) {
+    let memberId = req.params.memberId
+
+    memberModel.deleteOne({ _id: memberId }, function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "User Information Deleted!!"
+            })
+        }
+    })
+}
+
+
+//List Mmebers
+module.exports.getAllMembers = function (req, res) {
+    memberModel.find().populate("house").exec(function (err, data) {
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
+            })
+        }
+        else {
+            res.json({
+                "status": 200,
+                "data": data,
+                "msg": "Member Retrived!!"
+            })
+        }
+    })
+}

@@ -1,9 +1,9 @@
 const eventModel = require("../model/eventModel")
 const validator = require("validator")
+const { json } = require("express")
 
 module.exports.addEvent = function (req, res) {
 
-    let user = req.body.user
     let house = req.body.house
     let place = req.body.place
     let eventDate = req.body.eventDate
@@ -12,7 +12,6 @@ module.exports.addEvent = function (req, res) {
     let rent = req.body.rent
 
     let event = new eventModel({
-        "user": user,
         "house": house,
         "place": place,
         "eventDate": eventDate,
@@ -24,18 +23,6 @@ module.exports.addEvent = function (req, res) {
     let isError = false;
     let err = [];
 
-    if (eventDate == undefined || validator.isDate(eventDate) == false) {
-        isError = true;
-        err.push({
-            "eventDate Error": "Enter Valid Date"
-        })
-    }
-    if (eventEndDate == undefined || validator.isDate(eventEndDate) == false) {
-        isError = true;
-        err.push({
-            "eventEndDate Error": "Please Enter Valid Date"
-        })
-    }
 
     if (eventDetails == undefined || validator.isAlpha(eventDetails) == false || eventDetails.trim().length == 0) {
         isError = true;
@@ -81,7 +68,7 @@ module.exports.addEvent = function (req, res) {
 
 //getAllevent
 module.exports.getAllEvents = function (req, res) {
-    eventModel.find().populate("user").populate("house").populate("place").exec(function (err, data) {
+    eventModel.find().populate("house").populate("place").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -111,22 +98,7 @@ module.exports.updateEvent = function (req, res) {
 
     let isError = false;
     let err = [];
-    if (eventDate != undefined) {
-        if (eventDate == undefined || validator.isDate(eventDate) == false) {
-            isError = true;
-            err.push({
-                "Date Error": "Enter Valid Date"
-            })
-        }
-    }
-    if (eventEndDate != undefined) {
-        if (eventEndDate == undefined || validator.isDate(eventEndDate) == false) {
-            isError = true;
-            err.push({
-                "End Date Error": "Enter Valid End Date"
-            })
-        }
-    }
+
     if (eventDetails != undefined) {
         if (validator.isAlpha(eventDetails) == false || eventDetails.trim().length == 0) {
             isError = true;
@@ -178,7 +150,7 @@ module.exports.updateEvent = function (req, res) {
 }
 //deleteevent
 module.exports.deleteEvent = function (req, res) {
-    let eventId = req.body.eventId
+    let eventId = req.params.eventId
     eventModel.deleteOne({ _id: eventId }, function (err, data) {
         if (err) {
             console.log(err)
@@ -197,3 +169,132 @@ module.exports.deleteEvent = function (req, res) {
         }
     })
 }
+
+// event date api
+
+module.exports.getCheckDate = function (req, res) {
+    let startDate = req.params.startDate
+    let endDate = req.params.endDate
+    let place = req.params.place
+    // eventModel.find({
+    //     $or: [{ eventDate: { $gte: startDate, $lte: endDate } },
+    //     { eventEndDate: { $gte: startDate, $lte: endDate } }]
+    // }
+    //11
+    //12
+    //--13  
+    //15
+    //16      
+    //12 12 s1 
+    //10 15 no 
+    //15 22 s2 
+    //5  22 s2 
+
+
+    eventModel.find({
+        $and: [{ eventDate: { $lte: startDate } },
+        { eventEndDate: { $gte: endDate } }
+        ],place:place
+
+    }, function (err, data) {
+
+
+
+        if (err) {
+            console.log(err)
+            res.json({
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong...."
+            })
+        }
+        else {
+            console.log("first attempt...");
+            console.log(data);
+            if (data.length == 0) {
+                console.log("checkong end date")
+                eventModel.find({
+                    eventEndDate: { $gte: startDate, $lte: endDate },place:place
+                }, function (err, data2) {
+                    if (data2.length == 0) {
+                        console.log("checking final condition 10 and 15");
+                        eventModel.find({
+                            eventDate: { $gte: startDate, $lte: endDate }
+                        ,place:place}, function (err, data3) {
+                            if (data3.length == 0) {
+
+                                res.json({
+                                    "status": 200,
+                                    "data": [],
+                                    "msg": "NoEvent!!"
+                                })
+                            } else {
+
+                                res.json({
+                                    "status": 200,
+                                    "data": data3,
+                                    "msg": "Event Retrived!!"
+                                })
+                            }
+                        })
+                    } else {
+
+                        res.json({
+                            "status": 200,
+                            "data": data2,
+                            "msg": "Event Retrived!!"
+                        })
+                    }
+                })
+
+            } else {
+
+                res.json({
+                    "status": 200,
+                    "data":  data,
+                    "msg": "Event Retrived!!"
+                })
+            }
+        }
+
+    })
+}
+
+
+// event end date api
+
+// module.exports.getCheckEndDate = function (req, res) {
+//     let startDate = req.params.startDate
+//     let endDate = req.params.endDate
+
+//     //
+//     eventModel.find({
+//         eventDate: { $gte: startDate, $lte: endDate }
+//     }, function (err, data) {
+//         if (err) {
+//             console.log(err)
+//             res.json({
+//                 "status": -1,
+//                 "data": err,
+//                 "msg": "Something went Wrong...."
+//             })
+//         }
+//         else {
+//             if (data.length == 0) {
+//                 res.json({
+//                     "status": 200,
+//                     "data": data,
+//                     "msg": "No Event Found!!"
+//                 })
+//             } else {
+//                 res.json({
+//                     "status": 200,
+//                     "data": data,
+//                     "msg": "Event Retrived!!"
+//                 })
+//             }
+//         }
+//     })
+// }
+
+

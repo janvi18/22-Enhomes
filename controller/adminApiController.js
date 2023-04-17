@@ -1,26 +1,29 @@
-const houseModel = require("../model/houseModel")
+const adminApi = require("../model/adminApi")
 const validator = require("validator")
 //addHouse
 
-module.exports.addHouse = function (req, res) {
-    let user = req.body.user
-    let houseDetails = req.body.houseDetails;
+module.exports.addAdmin = function (req, res) {
+    let role = req.body.role
+    let email = req.body.email
+    let password = req.body.password;
 
-    let house = new houseModel({
-        "user": user,
-        "houseDetails": houseDetails
+    let admin = new houseModel({
+        "role": role,
+        "email": email,
+        "password": password
     })
 
 
     let isError = false;
     let err = [];
 
-    if (houseDetails == undefined || houseDetails.trim().length == 0) {
+    if (email == undefined || email.trim().length == 0) {
         isError = true;
         err.push({
-            "HouseDetails Error": "Please Enter Valid Information"
+            "Email Error": "Please Enter Valid Information"
         })
     }
+    
 
 
     if (isError) {
@@ -32,7 +35,7 @@ module.exports.addHouse = function (req, res) {
         })
     }
     else {
-        house.save(function (err, data) {
+        admin.save(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -53,9 +56,9 @@ module.exports.addHouse = function (req, res) {
 }
 
 //getAllHouses
-module.exports.getAllHouses = function (req, res) {
-    houseModel.find(function (err, data) {
-        houseModel.find().populate("user").exec(function (err, data) {
+module.exports.getAllAdmins = function (req, res) {
+    adminApi.find(function (err, data) {
+        adminApi.find().populate("role").exec(function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -68,7 +71,7 @@ module.exports.getAllHouses = function (req, res) {
                 res.json({
                     "status": 200,
                     "data": data,
-                    "msg": "Houses Retrived!!"
+                    "msg": "admins Retrived!!"
                 })
             }
         })
@@ -78,18 +81,17 @@ module.exports.getAllHouses = function (req, res) {
 
 
 //update House
-module.exports.updateHouse = function (req, res) {
-    let houseId = req.body.houseId
-    let houseDetails = req.body.houseDetails
+module.exports.updateAdmin = function (req, res) {
+    let email = req.body.email
 
     isError = false;
     let err = [];
 
-    if (houseDetails != undefined) {
-        if (houseDetails.trim().length == 0) {
+    if (email != undefined) {
+        if (email.trim().length == 0) {
             isError = true;
             err.push({
-                "HouseDetails Error": "Please Enter Valid Information"
+                "email Error": "Please Enter Valid Information"
             })
         }
     }
@@ -103,7 +105,7 @@ module.exports.updateHouse = function (req, res) {
         })
     }
     else {
-        houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails }, function (err, data) {
+        adminApi.updateOne({ _id: id }, { email: email }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -126,9 +128,9 @@ module.exports.updateHouse = function (req, res) {
 
 
 //deleteHouse
-module.exports.deletehouse = function (req, res) {
-    let houseId = req.params.houseId
-    houseModel.deleteOne({ _id: houseId }, function (err, data) {
+module.exports.deleteAdmin = function (req, res) {
+    let id = req.params.id
+    adminApi.deleteOne({ _id: id }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -141,7 +143,7 @@ module.exports.deletehouse = function (req, res) {
             res.json({
                 "status": 200,
                 "data": data,
-                "msg": "House Deleted!!"
+                "msg": "admin Deleted!!"
             })
         }
     })

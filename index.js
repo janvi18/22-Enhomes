@@ -5,18 +5,18 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 
 const userController = require("./controller/userController")
-const suggestionController = require("./controller/suggestionController")
 const roleController = require("./controller/roleController")
 const staffController = require("./controller/staffController")
 const maintenanceController = require("./controller/maintenanceController")
 const houseController = require("./controller/houseController")
-const visitorController = require("./controller/visitorController")
-const deliveryController = require("./controller/deliveryController")
 const placeController = require("./controller/placeController")
 const sessionController = require("./controller/sessionController")
-const complaintController = require("./controller/complaintController")
+const feedbackController = require("./controller/feedbackController")
 const eventController = require("./controller/eventController")
 const memberController = require("./controller/memberController")
+const nonMemebrController = require("./controller/NonMemberController")
+const maintenanceMaster=require("./controller/maintenanceMasterController")
+const adminApiController=require("./controller/adminApiController")
 
 
 const app = express()
@@ -32,77 +32,75 @@ app.post("/login", sessionController.login)
 app.get("/user", userController.getAllUsers)
 app.post("/user", userController.addUser)
 app.put("/user", userController.updateUser)
-app.delete("/user", userController.deleteUser)
-app.post("/forgetPassword",userController.forgetPassword)
-app.post("/updatepassword",userController.updatePassword)
-
-//Suggestion Api
-app.get("/suggestion", suggestionController.getAllSuggestions)
-app.post("/suggestion", suggestionController.addSuggestion)
-app.put("/suggestion", suggestionController.updateSuggestion)
-app.delete("/suggestion", suggestionController.deleteSuggestion)
+app.delete("/user/:userId", userController.deleteUser)
+app.post("/forgetPassword", userController.forgetPassword)
+app.post("/updatepassword", userController.updatePassword)
 
 //Role Api
 app.get("/role", roleController.getAllRoles)
 app.post("/role", roleController.addRole)
 app.put("/role", roleController.updateRole)
-app.delete("/role", roleController.deleteRole)
+app.delete("/role/:roleId", roleController.deleteRole)
 
 //Staff Api
 app.get("/staff", staffController.getAllStaff)
 app.post("/staff", staffController.addStaff)
 app.put("/staff", staffController.updateStaff)
-app.delete("/staff", staffController.deleteStaff)
+app.delete("/staff/:staffId", staffController.deleteStaff)
 
 //Maintenance Api
 app.get("/maintenance", maintenanceController.getAllMaintenance)
 app.post("/maintenance", maintenanceController.addMaintenance)
 app.put("/maintenance", maintenanceController.updateMaintenance)
-app.delete("/maintenance", maintenanceController.deleteMaintenance)
+app.delete("/maintenance/:maintenanceId", maintenanceController.deleteMaintenance)
+
+//Maintenance Master Api
+app.get("/maintenanceMaster", maintenanceMaster.getAllMaintenance)
+app.post("/maintenanceMaster", maintenanceMaster.addMaintenance)
+app.put("/maintenanceMaster", maintenanceMaster.updateMaintenance)
 
 //House Api
 app.get("/house", houseController.getAllHouses)
 app.post("/house", houseController.addHouse)
 app.put("/house", houseController.updateHouse)
-app.delete("/house", houseController.deletehouse)
-
-//Visitor Api
-app.get("/visitor", visitorController.getAllvisitors)
-app.post("/visitor", visitorController.addvisitor)
-app.put("/visitor", visitorController.updatevisitor)
-app.delete("/visitor", visitorController.deletevisitor)
-
-//Delivery Api
-app.get("/delivery", deliveryController.getAlldeliverys)
-app.post("/delivery", deliveryController.adddelivery)
-app.put("/delivery", deliveryController.updatedelivery)
-app.delete("/delivery", deliveryController.deletedelivery)
+app.delete("/house/:houseId", houseController.deletehouse)
 
 //Place Api
 app.get("/place", placeController.getAllPlaces)
 app.post("/place", placeController.addPlace)
 app.put("/place", placeController.updatePlace)
-app.delete("/place", placeController.deletePlace)
+app.delete("/place/:placeId", placeController.deletePlace)
 
 //event Api
 app.post("/event", eventController.addEvent)
 app.put("/event", eventController.updateEvent)
 app.get("/event", eventController.getAllEvents)
-app.delete("/event", eventController.deleteEvent)
+app.delete("/event/:eventId", eventController.deleteEvent)
+app.get("/getEventByDate/:startDate/:endDate/:place",eventController.getCheckDate)
 
-//Complain Api
-app.post("/complaint", complaintController.addcomplaint)
-app.put("/complaint", complaintController.updatecomplaint)
-app.get("/complaint", complaintController.getAllcomplaint)
-app.delete("/complaint", complaintController.deletecomplaint)
+//Feedback Api
+app.post("/feedback", feedbackController.addfeedback)
+app.put("/feedback", feedbackController.updatefeedback)
+app.get("/feedback", feedbackController.getAllfeedback)
+app.delete("/feedback/:feedbackId", feedbackController.deletefeedback)
 
 //Member Api
 app.post("/member", memberController.addMember)
 app.put("/member", memberController.updateMember)
 app.get("/member", memberController.getAllMembers)
-app.delete("/member", memberController.deleteMember)
+app.delete("/member/:memberId", memberController.deleteMember)
 
+//NonMember Api
+app.post("/nonmember", nonMemebrController.addNonMember)
+app.put("/nonmember", nonMemebrController.updateNonMember)
+app.get("/nonmember", nonMemebrController.getAllNonMember)
+app.delete("/nonmember/:nonmemberId", nonMemebrController.deleteNonMember)
 
+//Admin Api
+app.post("/admin", adminApiController.addAdmin)
+app.put("/admin", adminApiController.updateAdmin)
+app.get("/admin", adminApiController.getAllAdmins)
+app.delete("/admin/:adminId", adminApiController.deleteAdmin)
 
 const localDb = "mongodb://localhost/e-society-22";
 //const liveDb = "mongodb+srv://janvi123:enhomes@cluster0.l3iat.mongodb.net/enhomes?retryWrites=true&w=majority";

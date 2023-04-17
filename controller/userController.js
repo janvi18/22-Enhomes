@@ -1,4 +1,3 @@
-const UserModel = require("../model/userModel")
 const validator = require("validator")
 const userModel = require("../model/userModel")
 
@@ -20,21 +19,21 @@ module.exports.forgetPassword = function (req, res) {
         else {
 
             console.log(data);
-            if(data ){ 
-                    //otp generate
-                    let otp = parseInt((Math.random() * 100000)); 
-                    //mail send 
-                    userModel.updateOne({"email":email},{"otp":otp},function(err,data){
-                        console.log("update one ");
-                        console.log(err);
-                        console.log(data);
-                    })    
+            if (data) {
+                //otp generate
+                let otp = parseInt((Math.random() * 100000));
+                //mail send 
+                userModel.updateOne({ "email": email }, { "otp": otp }, function (err, data) {
+                    console.log("update one ");
+                    console.log(err);
+                    console.log(data);
+                })
                 res.json({
                     "status": 200,
                     "data": email,
                     "msg": "OTP successfully send to your email!!"
                 })
-            }else{
+            } else {
                 res.json({
                     "status": -1,
                     "data": email,
@@ -48,43 +47,38 @@ module.exports.forgetPassword = function (req, res) {
 
 //update password 
 
-module.exports.updatePassword = function(req,res){
+module.exports.updatePassword = function (req, res) {
 
     let email = req.body.email;
     let password = req.body.password;
-    let otp = req.body.otp ; 
+    let otp = req.body.otp;
 
 
-    userModel.findOne({"email":email},function(err,data){
-        if(data){
-            if(data.otp == otp ){
-                userModel.updateOne({"email":email},{"password":password},function(err,data){
+    userModel.findOne({ "email": email }, function (err, data) {
+        if (data) {
+            if (data.otp == otp) {
+                userModel.updateOne({ "email": email }, { "password": password }, function (err, data) {
                     console.log("Password modified...");
                     res.json({
-                        status:200,
-                        data:email,
-                        msg:"password modifed..."
+                        status: 200,
+                        data: email,
+                        msg: "password modifed..."
                     })
                 })
-            }else{
+            } else {
                 res.json({
-                    status:-1,
-                    data:req.body,
-                    msg:"Invalid otp"
+                    status: -1,
+                    data: req.body,
+                    msg: "Invalid otp"
                 })
             }
         }
     })
-
-
 }
-
-
 
 //add User
 module.exports.addUser = function (req, res) {
     let role = req.body.role
-    let house = req.body.house
     let firstName = req.body.firstName
     let lastName = req.body.lastName
     let dateOfBirth = req.body.dateOfBirth
@@ -95,9 +89,8 @@ module.exports.addUser = function (req, res) {
     let password = req.body.password
 
 
-    let user = new UserModel({
+    let user = new userModel({
         "role": role,
-        "house": house,
         "firstName": firstName,
         "lastName": lastName,
         "dateOfBirth": dateOfBirth,
@@ -124,12 +117,6 @@ module.exports.addUser = function (req, res) {
             "LastName Error": "Please Enter Valid Name"
         })
     }
-    if (dateOfBirth == undefined || validator.isDate(dateOfBirth) == false) {
-        isError = true;
-        err.push({
-            "DateOfBirth Error": "Enter Valid Date"
-        })
-    }
     if (age == undefined || validator.isNumeric(age.toString()) == false) {
         isError = true;
         err.push({
@@ -154,13 +141,8 @@ module.exports.addUser = function (req, res) {
             "Email Error": "Please Enter Valid Email"
         })
     }
-    if (password == undefined || validator.isAlpha(password) == false || password.trim().length == 0) {
-        isError = true;
-        err.push({
-            "Password Error": "Please Enter Valid Password"
-        })
-    }
 
+    console.log(password)
 
     if (isError) {
         res.json({
@@ -226,15 +208,6 @@ module.exports.updateUser = function (req, res) {
         }
     }
 
-    if (dateOfBirth != undefined) {
-        if (validator.isDate(dateOfBirth) == false) {
-            isError = true;
-            err.push({
-                "DateOfBirth Error": "Enter Valid Date"
-            })
-        }
-    }
-
     if (age != undefined) {
         if (validator.isNumeric(age.toString()) == false) {
             isError = true;
@@ -281,7 +254,6 @@ module.exports.updateUser = function (req, res) {
     }
 
 
-
     if (isError) {
         res.json({
             "status": -1,
@@ -290,7 +262,7 @@ module.exports.updateUser = function (req, res) {
         })
     }
     else {
-        UserModel.updateOne({ _id: userId }, { "firstName": firstName, "lastName": lastName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo, "email": email }, function (err, data) {
+        userModel.updateOne({ _id: userId }, { "firstName": firstName, "lastName": lastName, "dateOfBirth": dateOfBirth, "age": age, "gender": gender, "contactNo": contactNo, "email": email }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({
@@ -314,9 +286,9 @@ module.exports.updateUser = function (req, res) {
 
 //Delete User
 module.exports.deleteUser = function (req, res) {
-    let userId = req.body.userId
+    let userId = req.params.userId
 
-    UserModel.deleteOne({ _id: userId }, function (err, data) {
+    userModel.deleteOne({ _id: userId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -338,7 +310,7 @@ module.exports.deleteUser = function (req, res) {
 
 //List Mmebers
 module.exports.getAllUsers = function (req, res) {
-    UserModel.find().populate("role").populate("house").exec(function (err, data) {
+    userModel.find().populate("role").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({

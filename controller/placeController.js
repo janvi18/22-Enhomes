@@ -1,19 +1,18 @@
-const PlaceModel=require("../model/placeModel")
-const validator=require("validator")
+const placeModel = require("../model/placeModel")
+const validator = require("validator")
 
 
 //add place
-module.exports.addPlace= function(req,res)
-{
-    let placeName=req.body.placeName
-    let place = new PlaceModel({
+module.exports.addPlace = function (req, res) {
+    let placeName = req.body.placeName
+    let place = new placeModel({
         "placeName": placeName
     })
 
     let isError = false
     let err = []
 
-    if (placeName==undefined || validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
+    if (placeName == undefined || validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
         isError = true;
         err.push({
             "PlaceName Error": "Please Enter Valid Name"
@@ -30,9 +29,8 @@ module.exports.addPlace= function(req,res)
         })
     }
     else {
-        place.save(function(err,data){
-            if(err)
-            {
+        place.save(function (err, data) {
+            if (err) {
                 console.log(err)
                 res.json({
                     "status": -1,
@@ -40,8 +38,7 @@ module.exports.addPlace= function(req,res)
                     "msg": "Something went Wrong..."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,
@@ -55,7 +52,7 @@ module.exports.addPlace= function(req,res)
 
 //getAllPlaces
 module.exports.getAllPlaces = function (req, res) {
-    PlaceModel.find(function (err, data) {
+    placeModel.find(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -84,10 +81,8 @@ module.exports.updatePlace = function (req, res) {
     let isError = false
     let err = []
 
-    if(placeName != undefined)
-    {
-        if (validator.isAlpha(placeName) == false || placeName.trim().length == 0)
-        {
+    if (placeName != undefined) {
+        if (validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
             isError = true;
             err.push({
                 "PlaceName Error": "Please Enter Valid Name"
@@ -104,17 +99,15 @@ module.exports.updatePlace = function (req, res) {
         })
     }
     else {
-        PlaceModel.updateOne({ _id: placeId }, { placeName: req.body.placeName },function(err,data){
-            if(err)
-            {
+        placeModel.updateOne({ _id: placeId }, { placeName: req.body.placeName }, function (err, data) {
+            if (err) {
                 res.json({
                     "status": -1,
                     "data": err,
                     "msg": "Something went Wrong...."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,
@@ -130,8 +123,8 @@ module.exports.updatePlace = function (req, res) {
 
 //deletePlace
 module.exports.deletePlace = function (req, res) {
-    let placeId = req.body.placeId
-    PlaceModel.deleteOne({ _id: placeId }, function (err, data) {
+    let placeId = req.params.placeId
+    placeModel.deleteOne({ _id: placeId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
